@@ -1,18 +1,20 @@
+import java.math.BigDecimal;
 
 public class Matrix {
+	
 
-	final double[][] matrix;
+	final BigDecimal[][] matrix;
 	final int matrixRow;
 	final int matrixCol;
 	//Constructor Section
 	public Matrix(int rows, int cols) {
-		matrix = new double[rows][cols];
+		matrix = new BigDecimal[rows][cols];
 		matrixRow = matrix.length;
 		matrixCol = matrix[0].length;
 	}
 	
 	public Matrix(double[][] mat) {
-		matrix = new double[mat.length][mat[0].length];
+		matrix = new BigDecimal[mat.length][mat[0].length];
         for(int row = 0;row<matrix.length;row++)
         	System.arraycopy(mat[row], 0, matrix[row], 0, mat[row].length);
         matrixRow = matrix.length;
@@ -20,7 +22,7 @@ public class Matrix {
 	}
 	
 	public Matrix(Vector[] vectors) {
-		matrix = new double[vectors[0].vector.length][vectors.length];
+		matrix = new BigDecimal[vectors[0].vector.length][vectors.length];
         for(int row = 0;row<matrix.length;row++)
         	for(int col = 0;col<matrix[0].length;col++)
         		matrix[row][col] = vectors[col].vector[row];
@@ -37,14 +39,14 @@ public class Matrix {
 		System.arraycopy(temp, 0, matrix[row2], 0, matrixCol);
 	}
 	
-	public void scalarMultipication(int row, double scale) {
+	public void scalarMultipication(int row, BigDecimal scale) {
 		for(int col = 0; col < matrixCol; col++) 
-			matrix[row][col]*=scale;
+			matrix[row][col].multiply(scale);
 	}
 	//Adds row2 scaled by scale to row1
-	public void addRows(int row1, int row2, double scale) {
+	public void addRows(int row1, int row2, BigDecimal scale) {
 		for(int col = 0; col < matrixCol; col++) 
-			matrix[row1][col]+= matrix[row2][col]*scale;
+			matrix[row1][col].add(matrix[row2][col].multiply(scale));
 	}
 	
     public String toString(){
@@ -76,10 +78,20 @@ public class Matrix {
     		}
     	return maxLength+1;
     }
-    
-	public static void main(String[] args) {
-		double[][] mat = {{1, 4, 5}, {5, 100 ,2}, {2, 6 , 9}};
-		Matrix matrix = new Matrix(mat);
-		System.out.println(matrix);
+    public static void main(String[] args) {
+		System.out.println("Hello");
+	}
+	
+	//return 0 if not divisible by leading value, otherwise returns th value of the leading number
+	public BigDecimal rowDivisibleByLeadingValue(int row) {
+		BigDecimal leading = matrix[row][0];
+		for(int col = 1; col < matrixCol; col++) {
+			if(matrix[row][col].remainder(leading).doubleValue() != 0)
+				return new BigDecimal("0");
+		}
+		return leading;
+	}
+	public boolean leadingValueIsOne(int row) {
+		return matrix[row][0] == 1;
 	}
 }
