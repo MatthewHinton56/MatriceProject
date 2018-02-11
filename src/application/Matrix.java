@@ -104,8 +104,11 @@ public class Matrix {
 	}
 	//Adds row2 scaled by scale to row1
 	public void addRows(int row1, int row2, BigDecimal scale) {
-		for(int col = 0; col < matrixCol; col++) 
+		for(int col = 0; col < matrixCol; col++){
 			matrix[row1][col] = matrix[row1][col].add(matrix[row2][col].multiply(scale));
+			if(matrix[row1][col].compareTo(BigDecimal.ZERO) == 0)
+				matrix[row1][col] = BigDecimal.ZERO;
+		}
 	}
 	
     public String toString(){
@@ -261,6 +264,8 @@ public class Matrix {
 					break;
 				}
 			}
+			if(noSolution)
+				break;
 			pivotRows[pivotRow] = true;
 			pivotCols[col] = true;
 			numPivots++;
