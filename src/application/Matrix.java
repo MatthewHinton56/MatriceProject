@@ -1,3 +1,4 @@
+package application;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -107,7 +108,7 @@ public class Matrix {
 		BigDecimal[][] mat = new BigDecimal[rows][cols];
 		for(int row = 0;row<mat.length;row++)
         	for(int col = 0;col<mat[0].length;col++) {
-        		System.out.print("Enter next value");
+        		System.out.print("Enter next value: ");
         		String s = scan.nextLine();
         		mat[row][col] = new BigDecimal(s);
         }
@@ -162,7 +163,6 @@ public class Matrix {
 		return -1;
 	}
 	
-	//unaugmented
 	public void ref() {
 		if(!ref){
 		int numPivots = 0;
