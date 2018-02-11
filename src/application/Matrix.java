@@ -54,7 +54,6 @@ public class Matrix {
 	
 	//System of equations constructor
 	public Matrix(String system,int totalVariables, int amountOfEquations) {
-		System.out.println(system);
 		matrix = new BigDecimal[amountOfEquations][totalVariables+1];
 		matrixRow = matrix.length;
 		matrixCol = matrix[0].length;
@@ -183,18 +182,6 @@ public class Matrix {
 	}
 	public boolean leadingValueIsOne(int row, int col) {
 		return matrix[row][col].equals(BigDecimal.ONE);
-	}
-	
-	public boolean leadingValueIsNotZero(int row, int col) {
-		return !matrix[row][col].equals(BigDecimal.ZERO);
-	}
-	
-	public boolean allZeroRow(int row) {
-		for(int col = 0;col < matrixCol; col++) {
-			if(!matrix[row][col].equals(BigDecimal.ZERO))
-				return false;
-		}
-		return true;
 	}
 	
 	public boolean impossibleRow(int row) {
