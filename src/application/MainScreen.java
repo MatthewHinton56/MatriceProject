@@ -11,6 +11,7 @@ public class MainScreen extends Application {
 		// TODO Auto-generated method stub
 		stage = primaryStage;
 		MatrixScreen.setUp();
+		SystemScreen.setUp();
 		primaryStage.setScene(MatrixScreen.scene);
 		primaryStage.show();
 	}

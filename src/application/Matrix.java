@@ -2,6 +2,7 @@ package application;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.Arrays;
 import java.util.Scanner;
 public class Matrix {
 	
@@ -14,16 +15,21 @@ public class Matrix {
 	final boolean[] pivotCols;
 	boolean ref;
 	boolean rref;
+	final boolean augmented;
+	//No solution flag set true if matrix is augmented and the form 0 0 0 C where is a non zero value exists.
+	boolean noSolution;
+	
 	//Constructor Section
-	public Matrix(int rows, int cols) {
+	public Matrix(int rows, int cols,boolean augmented) {
 		matrix = new BigDecimal[rows][cols];
 		matrixRow = matrix.length;
 		matrixCol = matrix[0].length;
 		pivotRows = new boolean[matrixRow];
 		pivotCols = new boolean[matrixCol];
+		this.augmented = augmented;
 	}
 	
-	public Matrix(BigDecimal[][] mat) {
+	public Matrix(BigDecimal[][] mat,boolean augmented) {
 		matrix = new BigDecimal[mat.length][mat[0].length];
         for(int row = 0;row<matrix.length;row++)
         	System.arraycopy(mat[row], 0, matrix[row], 0, mat[row].length);
@@ -31,9 +37,10 @@ public class Matrix {
 		matrixCol = matrix[0].length;
 		pivotRows = new boolean[matrixRow];
 		pivotCols = new boolean[matrixCol];
+		this.augmented = augmented;
 	}
 	
-	public Matrix(Vector[] vectors) {
+	public Matrix(Vector[] vectors,boolean augmented) {
 		matrix = new BigDecimal[vectors[0].vector.length][vectors.length];
         for(int row = 0;row<matrix.length;row++)
         	for(int col = 0;col<matrix[0].length;col++)
@@ -42,7 +49,40 @@ public class Matrix {
 		matrixCol = matrix[0].length;
 		pivotRows = new boolean[matrixRow];
 		pivotCols = new boolean[matrixCol];
+		this.augmented = augmented;
 	}
+	
+	//System of equations constructor
+	public Matrix(String system,int totalVariables, int amountOfEquations) {
+		System.out.println(system);
+		matrix = new BigDecimal[amountOfEquations][totalVariables+1];
+		matrixRow = matrix.length;
+		matrixCol = matrix[0].length;
+		pivotRows = new boolean[matrixRow];
+		pivotCols = new boolean[matrixCol];
+		augmented = true;
+		for(int row = 0;row<matrix.length;row++)
+        	for(int col = 0;col<matrix[0].length;col++)
+        		matrix[row][col] = BigDecimal.ZERO;
+		Scanner systemProcessor = new Scanner(system);
+		for(int equationCounter = 0; equationCounter < amountOfEquations; equationCounter++) {
+			String equation = systemProcessor.nextLine();
+			//System.out.println(equation);
+			String[] variables = equation.split(" [+=] ");
+			for(int variable = 0;variable < variables.length-1;variable++) {
+				String var = variables[variable];
+				if(var.indexOf("-") == 0 && var.indexOf("X") == 1)
+					var = "-1"+var.substring(1);
+				if(var.indexOf("X") == 0)
+					var = "1"+var;
+				int col = Integer.parseInt(var.substring(var.indexOf("X")+1));
+				matrix[equationCounter][col-1] = new BigDecimal(var.substring(0, var.indexOf("X")));
+			}
+			matrix[equationCounter][matrixCol-1] = new BigDecimal(variables[variables.length-1]);
+		}
+		
+	}
+	
 	
 	//Elementary Row Operations
 	
@@ -99,8 +139,8 @@ public class Matrix {
     }
 
 	public static void main(String[] args) {
-		Scanner scan = new Scanner(System.in);
-		System.out.print("Enter rows:");
+
+		/*System.out.print("Enter rows:");
 		int rows = scan.nextInt();
 		System.out.print("Enter cols:");
 		int cols = scan.nextInt();
@@ -112,12 +152,19 @@ public class Matrix {
         		String s = scan.nextLine();
         		mat[row][col] = new BigDecimal(s);
         }
-		Matrix matrix = new Matrix(mat);
+		Matrix matrix = new Matrix(mat, true);
 		System.out.println(matrix);
 		matrix.ref();
 		System.out.println(matrix);
 		matrix.rref();
 		System.out.println(matrix);
+		System.out.println(matrix.variableAssignment());*/
+		String system = "X1 + -3X2 + -5X3 = 0\nX2 + -X3 = -1";
+		Matrix matrix = new Matrix(system,3,2);
+		System.out.println(matrix);
+		matrix.rref();
+		System.out.println(matrix);
+		System.out.println(matrix.variableAssignment());
 	}
 	
 	//return 0 if not divisible by leading value, otherwise returns th value of the leading number
@@ -145,6 +192,14 @@ public class Matrix {
 				return false;
 		}
 		return true;
+	}
+	
+	public boolean impossibleRow(int row) {
+		for(int col = 0;col < matrixCol-1; col++) {
+			if(!matrix[row][col].equals(BigDecimal.ZERO))
+				return false;
+		}
+		return !matrix[row][matrixCol-1].equals(BigDecimal.ZERO);
 	}
 	
 	public boolean allZeroCol(int col, int start) {
@@ -201,6 +256,10 @@ public class Matrix {
 			
 			for(int row = pivotRow + 1;row < matrixRow;row++) {
 				addRows(row,pivotRow,matrix[row][col].multiply(negativeOne));
+				if(augmented && impossibleRow(row)) {
+					noSolution = true;
+					break;
+				}
 			}
 			pivotRows[pivotRow] = true;
 			pivotCols[col] = true;
@@ -225,4 +284,37 @@ public class Matrix {
 	}
 	rref = true;	
 	}
+	//PreCondition: rref has been called and matrix is augmented
+	public String variableAssignment() {
+		StringBuilder builder = new StringBuilder();
+		if(noSolution) {
+			return "No variable assigment possible.";
+		}
+		int pivotRow = 0;
+		for(int col = 0; col < matrixCol - 1; col++) {
+			if(!pivotCols[col]) {
+				builder.append("X");
+				builder.append((col+1));
+				builder.append(" is free");
+			} else {
+				builder.append("X");
+				builder.append((col+1));
+				builder.append(" = ");
+				builder.append(matrix[pivotRow][matrixCol-1].toString());
+				for(int variableCol = col + 1 ;variableCol < matrixCol-1; variableCol++) {
+					if(!matrix[pivotRow][variableCol].equals(BigDecimal.ZERO)) {
+						builder.append(" + ");
+						builder.append(matrix[pivotRow][variableCol].multiply(negativeOne));
+						builder.append("X");
+						builder.append((variableCol+1));
+					}
+				}
+				pivotRow++;
+			}
+		builder.append("\n");
+		
+		}
+		return builder.toString();
+	}
+	
 }

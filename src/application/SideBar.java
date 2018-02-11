@@ -12,8 +12,10 @@ public class SideBar extends ToolBar{
 		VBox box = new VBox();
 		ScrollPane sPane = new ScrollPane(box);
 		Button matrix = new Button("Matrix");
+		Button system = new Button("System");
 		matrix.setOnAction(e -> MainScreen.stage.setScene(MatrixScreen.scene));
-		box.getChildren().add(matrix);
+		system.setOnAction(e -> MainScreen.stage.setScene(SystemScreen.scene));
+		box.getChildren().addAll(matrix,system);
 		this.getItems().add(sPane);
 	}
 	

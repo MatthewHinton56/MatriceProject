@@ -84,7 +84,7 @@ public class MatrixScreen {
             	for(int i = 0; i < mat.length; i++)
             		for(int q = 0; q < mat[0].length; q++)
             			mat[i][q] = new BigDecimal(matrixT[i][q].getText());
-            	Matrix matrix = new Matrix(mat);
+            	Matrix matrix = new Matrix(mat,false);
             	matrix.ref();
             	for(int i = 0; i < mat.length; i++)
             		for(int q = 0; q < mat[0].length; q++)
@@ -98,7 +98,7 @@ public class MatrixScreen {
             	for(int i = 0; i < mat.length; i++)
             		for(int q = 0; q < mat[0].length; q++)
             			mat[i][q] = new BigDecimal(matrixT[i][q].getText());
-            	Matrix matrix = new Matrix(mat);
+            	Matrix matrix = new Matrix(mat,false);
             	matrix.rref();
             	for(int i = 0; i < mat.length; i++)
             		for(int q = 0; q < mat[0].length; q++)
