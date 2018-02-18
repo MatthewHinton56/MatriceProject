@@ -103,8 +103,10 @@ public class Matrix {
 	public void scalarMultipication(int row, BigDecimal scale) {
 		for(int col = 0; col < matrixCol; col++) {
 			matrix[row][col] = matrix[row][col].multiply(scale);
-			if(matrix[row][col].abs().remainder(BigDecimal.ONE).compareTo(roundUpValue) == 1
-					||matrix[row][col].abs().remainder(BigDecimal.ONE).compareTo(roundDownValue) == -1) 
+			boolean roundDown = matrix[row][col].abs().remainder(BigDecimal.ONE).compareTo(roundDownValue) == -1;
+			boolean remainderNotZero = !matrix[row][col].abs().remainder(BigDecimal.ONE).equals(BigDecimal.ZERO);
+			if(matrix[row][col].abs().remainder(BigDecimal.ONE).compareTo(roundUpValue) == 1 
+					||(roundDown&&remainderNotZero)) 
 				matrix[row][col] = new BigDecimal(matrix[row][col].floatValue()+"");
 			if(matrix[row][col].compareTo(BigDecimal.ZERO) == 0)
 				matrix[row][col] = BigDecimal.ZERO;
@@ -117,8 +119,10 @@ public class Matrix {
 	public void scalarDivision(int row, BigDecimal divisor) {
 		for(int col = 0; col < matrixCol; col++){
 			matrix[row][col] = matrix[row][col].divide(divisor, MathContext.DECIMAL64);
-			if(matrix[row][col].abs().remainder(BigDecimal.ONE).compareTo(roundUpValue) == 1
-					||matrix[row][col].abs().remainder(BigDecimal.ONE).compareTo(roundDownValue) == -1) 
+			boolean roundDown = matrix[row][col].abs().remainder(BigDecimal.ONE).compareTo(roundDownValue) == -1;
+			boolean remainderNotZero = !matrix[row][col].abs().remainder(BigDecimal.ONE).equals(BigDecimal.ZERO);
+			if(matrix[row][col].abs().remainder(BigDecimal.ONE).compareTo(roundUpValue) == 1 
+					||(roundDown&&remainderNotZero)) 
 				matrix[row][col] = new BigDecimal(matrix[row][col].floatValue()+"");
 			if(matrix[row][col].compareTo(BigDecimal.ZERO) == 0)
 				matrix[row][col] = BigDecimal.ZERO;
@@ -132,8 +136,10 @@ public class Matrix {
 	public void addRows(int row1, int row2, BigDecimal scale) {
 		for(int col = 0; col < matrixCol; col++){
 			matrix[row1][col] = matrix[row1][col].add(matrix[row2][col].multiply(scale));
+			boolean roundDown = matrix[row1][col].abs().remainder(BigDecimal.ONE).compareTo(roundDownValue) == -1;
+			boolean remainderNotZero = !matrix[row1][col].abs().remainder(BigDecimal.ONE).equals(BigDecimal.ZERO);
 			if(matrix[row1][col].abs().remainder(BigDecimal.ONE).compareTo(roundUpValue) == 1 
-					||matrix[row1][col].abs().remainder(BigDecimal.ONE).compareTo(roundDownValue) == -1) 
+					||(roundDown&&remainderNotZero)) 
 				matrix[row1][col] = new BigDecimal(matrix[row1][col].floatValue()+"");
 			if(matrix[row1][col].compareTo(BigDecimal.ZERO) == 0)
 				matrix[row1][col] = BigDecimal.ZERO;
@@ -247,8 +253,8 @@ public class Matrix {
 			int numPivots = 0;
 			for(int col = 0; col < matrixCol; col++) {
 				if(!allZeroCol(col,numPivots)) {
-					System.out.println(this);	
 					int pivotRow = -1;
+					//System.out.println(this);
 					//identify if a one is a non pivot row.
 					//First identify if 1 in any row
 					for(int row = numPivots;pivotRow == -1 &&  row < matrixRow; row++) {
@@ -347,7 +353,6 @@ public class Matrix {
 	//Precondtion  rref() and matric is augmented
 	public String vectorForm() {
 		String format = "%1$"+maxLength()+"s";
-		System.out.println(Arrays.toString(pivotCols));
 		ArrayList<Vector> vectors = new ArrayList<Vector>();
 		Queue<Integer> pivotColumns = new LinkedList<Integer>();
 		for(int col = 0; col < matrixCol; col++) {
@@ -384,7 +389,7 @@ public class Matrix {
 				}
 			} else {
 				for(int col = 0; col < vectors.size()-1;col++) {
-					builder.append("   ");
+					builder.append("     ");
 					builder.append("|");
 					builder.append(String.format(format,vectors.get(col).vector[row]));
 					builder.append("|");
@@ -392,7 +397,9 @@ public class Matrix {
 				}
 			}
 			if(!vectors.get(vectors.size()-1).isZeroVector()) {
-				builder.append(" + |");
+				if(vectors.size() != 1)
+					builder.append(" + ");
+				builder.append("|");
 				builder.append(String.format(format,vectors.get(vectors.size()-1).vector[row]));
 				builder.append("|");
 			}
@@ -402,5 +409,31 @@ public class Matrix {
 		return output;
 	}
 
-
+	@Override
+	public Object clone() {
+		Matrix matrix = new Matrix(matrixRow,matrixCol,augmented);
+		for(int row = 0; row < matrixRow; row++)
+			for(int col = 0; col < matrixCol; col++)
+				matrix.matrix[row][col] = this.matrix[row][col];
+		return matrix;
+	}
+	
+	public static Matrix augment(Matrix matrix, Vector v) {
+		Matrix matrixA = new Matrix(matrix.matrixRow,matrix.matrixCol+1,true);
+		for(int row = 0; row < matrix.matrixRow; row++)
+		{
+			for(int col = 0; col < matrix.matrixCol; col++)
+				matrixA.matrix[row][col] = matrix.matrix[row][col];
+			matrixA.matrix[row][matrix.matrixCol] = v.vector[row];
+		}
+		return matrixA;
+	}
+	//matrix is augmented
+	public String[] getAugColumn() {
+		String[] augCol = new String[matrixRow];
+		for(int row = 0;row < matrixRow; row++) {
+			augCol[row] = matrix[row][matrixCol-1].toString();
+		}
+		return augCol;
+	}
 }

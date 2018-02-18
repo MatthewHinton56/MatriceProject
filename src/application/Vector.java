@@ -61,4 +61,12 @@ public class Vector {
     	}		
     	return maxLength+1;
     }
+    
+    public String[] getVector() {
+		String[] augCol = new String[vector.length];
+		for(int row = 0;row < augCol.length; row++) {
+			augCol[row] = vector[row].toString();
+		}
+		return augCol;
+	}
 }

@@ -13,9 +13,11 @@ public class SideBar extends ToolBar{
 		ScrollPane sPane = new ScrollPane(box);
 		Button matrix = new Button("Matrix");
 		Button system = new Button("System");
-		matrix.setOnAction(e -> MainScreen.stage.setScene(MatrixScreen.scene));
-		system.setOnAction(e -> MainScreen.stage.setScene(SystemScreen.scene));
-		box.getChildren().addAll(matrix,system);
+		Button function = new Button("Function");
+		matrix.setOnAction(e -> MainStage.stage.setScene(MatrixScreen.scene));
+		system.setOnAction(e -> MainStage.stage.setScene(SystemScreen.scene));
+		function.setOnAction(e -> MainStage.stage.setScene(FunctionScreen.scene));
+		box.getChildren().addAll(matrix,system,function);
 		this.getItems().add(sPane);
 	}
 	

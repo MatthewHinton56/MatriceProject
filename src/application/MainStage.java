@@ -3,7 +3,7 @@ package application;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class MainScreen extends Application {
+public class MainStage extends Application {
 
 	public static Stage stage;
 	@Override
@@ -12,6 +12,7 @@ public class MainScreen extends Application {
 		stage = primaryStage;
 		MatrixScreen.setUp();
 		SystemScreen.setUp();
+		FunctionScreen.setUp();
 		primaryStage.setScene(MatrixScreen.scene);
 		primaryStage.show();
 	}
