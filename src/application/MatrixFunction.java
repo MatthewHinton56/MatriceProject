@@ -45,7 +45,6 @@ public class MatrixFunction {
 	
 	//Takes in a vector and applies the transformation
 	public Vector evaluate(Vector v) {
-		System.out.println(matrix+ " "+v);
 		Vector output = new Vector(codomain);
 		for(int row = 0; row < matrix.matrixRow; row++)
 			for(int col = 0; col < matrix.matrixCol; col++)
