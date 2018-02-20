@@ -58,3 +58,11 @@ The system form is one of the gui screens available to the user, and is used to 
 Reads in a system of a equations, using two parameters, # of Variables, and # of Equations.           
 The variables are allowed are X1 .... X(# of variables), in any order. Each variable must be separated by " + " and the equation must be in the form X1 + 5X2 + 6X3 = 5 for example, with each opeator and variable separated by a space.      
 Vector or variable form is specified, and if properly inputed, the answer will be pumped out
+
+## Matrix 
+
+Matrix is the simplest of gui tabs, simply specify the number of columns and rows for the matrix.  press generate, and the matrix will be created. Fill with values of your choice, and use the functions listed to manipulate the matrix.
+
+## Function
+
+Uses the matrix function class and part of the Matrix gui. Specify the rows and columns for A, then press generate. It will generate A as well as the acceptable X vector and the vector b that will generated. Fill A with the desired function and press generate function, which will set the onto and 1 to 1 flags based on the matrix. The three buttons preform as specified by filling out the necessary vector, the output of the button will be placed in the necessary vector
