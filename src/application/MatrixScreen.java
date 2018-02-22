@@ -1,6 +1,10 @@
 package application;
 
 import java.math.BigDecimal;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.Stack;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -35,10 +39,17 @@ public class MatrixScreen {
 	public static final ScrollPane MatrixFunctionScrollPane = new ScrollPane(matrixFunctions);
 	public static final Button ref = new Button("ref");
 	public static final Button rref = new Button("rref");
+	public static final Button L = new Button("L");
+	public static final Button U = new Button("U");
+	public static final Button prev = new Button("Prev");
+	public static final Button save = new Button("Save");
+	public static final Button load = new Button("Load");
+	public static final Button clear = new Button("Clear");
 	public static TextField[][] matrixT;
-	
+	public static final Deque<String[][]> prevMatrixStack = new ArrayDeque<String[][]>();
+	public static String[][] saveMatrix;
 	public static void setUp() {
-		matrixFunctions.getChildren().addAll(ref,rref);
+		matrixFunctions.getChildren().addAll(ref, rref, L, U, prev, save, load, clear);
 		MatrixFunctionScrollPane.setFitToHeight(true);
 		MatrixFunctionScrollPane.setFitToWidth(true);
 		pane.setBottom(matrixFunctions);
@@ -52,6 +63,8 @@ public class MatrixScreen {
 		createMatrix.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+            	prevMatrixStack.clear();
+            	saveMatrix = null;
             	box.getChildren().removeAll(box.getChildren());
             	int row = Integer.parseInt(rows.getText());
             	int col = Integer.parseInt(cols.getText());
@@ -80,10 +93,14 @@ public class MatrixScreen {
 		ref.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+            	String[][] prevMatrixT = new String[matrixT.length][matrixT[0].length];
             	BigDecimal[][] mat = new BigDecimal[matrixT.length][matrixT[0].length];
             	for(int i = 0; i < mat.length; i++)
-            		for(int q = 0; q < mat[0].length; q++)
+            		for(int q = 0; q < mat[0].length; q++) {
             			mat[i][q] = new BigDecimal(matrixT[i][q].getText());
+            			prevMatrixT[i][q] = matrixT[i][q].getText();
+            		}
+            	prevMatrixStack.add(prevMatrixT);
             	Matrix matrix = new Matrix(mat,false);
             	matrix.ref();
             	for(int i = 0; i < mat.length; i++)
@@ -94,10 +111,14 @@ public class MatrixScreen {
 		rref.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
+            	String[][] prevMatrixT = new String[matrixT.length][matrixT[0].length];
             	BigDecimal[][] mat = new BigDecimal[matrixT.length][matrixT[0].length];
             	for(int i = 0; i < mat.length; i++)
-            		for(int q = 0; q < mat[0].length; q++)
+            		for(int q = 0; q < mat[0].length; q++) {
             			mat[i][q] = new BigDecimal(matrixT[i][q].getText());
+            			prevMatrixT[i][q] = matrixT[i][q].getText();
+            		}
+            	prevMatrixStack.add(prevMatrixT);
             	Matrix matrix = new Matrix(mat,false);
             	matrix.rref();
             	for(int i = 0; i < mat.length; i++)
@@ -106,5 +127,89 @@ public class MatrixScreen {
             }
         });
 		
+		L.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+            	String[][] prevMatrixT = new String[matrixT.length][matrixT[0].length];
+            	BigDecimal[][] mat = new BigDecimal[matrixT.length][matrixT[0].length];
+            	for(int i = 0; i < mat.length; i++)
+            		for(int q = 0; q < mat[0].length; q++) {
+            			mat[i][q] = new BigDecimal(matrixT[i][q].getText());
+            			prevMatrixT[i][q] = matrixT[i][q].getText();
+            		}
+            	prevMatrixStack.add(prevMatrixT);
+            	Matrix matrix = new Matrix(mat,false);
+            	matrix.LU();
+            	for(int i = 0; i < mat.length; i++)
+            		for(int q = 0; q < mat.length; q++)
+            			matrixT[i][q].setText(""+matrix.getL()[i][q]);
+            	for(int i = 0; i < mat.length; i++)
+            		for(int q = mat.length; q < mat[0].length; q++)
+            			matrixT[i][q].setText("N/A");
+            }
+        });
+		U.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+            	String[][] prevMatrixT = new String[matrixT.length][matrixT[0].length];
+            	BigDecimal[][] mat = new BigDecimal[matrixT.length][matrixT[0].length];
+            	for(int i = 0; i < mat.length; i++)
+            		for(int q = 0; q < mat[0].length; q++) {
+            			mat[i][q] = new BigDecimal(matrixT[i][q].getText());
+            			prevMatrixT[i][q] = matrixT[i][q].getText();
+            		}
+            	prevMatrixStack.add(prevMatrixT);
+            	Matrix matrix = new Matrix(mat,false);
+            	matrix.LU();
+            	for(int i = 0; i < mat.length; i++)
+            		for(int q = 0; q < mat[0].length; q++)
+            			matrixT[i][q].setText(""+matrix.getU()[i][q]);
+            }
+        });
+		
+		prev.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+            	if(!prevMatrixStack.isEmpty()) {
+            		String[][] prevMatrixT = prevMatrixStack.pop();
+            		for(int i = 0; i < prevMatrixT.length; i++)
+                		for(int q = 0; q < prevMatrixT[0].length; q++)
+                			matrixT[i][q].setText(""+prevMatrixT[i][q]);
+            	}
+            }
+        });
+		
+		load.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+            	if(saveMatrix != null) {
+            		for(int i = 0; i < saveMatrix.length; i++)
+                		for(int q = 0; q < saveMatrix[0].length; q++)
+                			matrixT[i][q].setText(""+saveMatrix[i][q]);
+            	}
+            }
+        });
+		
+		save.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+            	String[][] mat = new String[matrixT.length][matrixT[0].length];
+            	for(int i = 0; i < mat.length; i++)
+            		for(int q = 0; q < mat[0].length; q++) {
+            			mat[i][q] = matrixT[i][q].getText();
+            		}
+            	saveMatrix = mat;
+            }
+        });
+		
+		clear.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+            	for(int i = 0; i < matrixT.length; i++)
+            		for(int q = 0; q < matrixT[0].length; q++) {
+            			matrixT[i][q].setText("0");
+            		}
+            }
+        });
 	}
 }
