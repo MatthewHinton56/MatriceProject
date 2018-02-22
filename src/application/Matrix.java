@@ -9,10 +9,10 @@ import java.util.Queue;
 import java.util.Scanner;
 public class Matrix {
 
-	public static final BigDecimal negativeOne = new BigDecimal("-1");
-	public static final BigDecimal roundoff = new BigDecimal(".001");
-	public static final BigDecimal roundUpValue = new BigDecimal(".999");
-	public static final BigDecimal roundDownValue = new BigDecimal(".0001");
+	public static final BigDecimal NEGATIVEONE = new BigDecimal("-1");
+	public static final BigDecimal ROUNDOFF = new BigDecimal(".001");
+	public static final BigDecimal ROUNDUPVALUE = new BigDecimal(".999");
+	public static final BigDecimal ROUNDDOWNVALUE = new BigDecimal(".0001");
 	final BigDecimal[][] matrix, L, U;
 	final int matrixRow;
 	final int matrixCol;
@@ -121,14 +121,14 @@ public class Matrix {
 	public void scalarMultipication(int row, BigDecimal scale) {
 		for(int col = 0; col < matrixCol; col++) {
 			matrix[row][col] = matrix[row][col].multiply(scale);
-			boolean roundDown = matrix[row][col].abs().remainder(BigDecimal.ONE).compareTo(roundDownValue) == -1;
+			boolean roundDown = matrix[row][col].abs().remainder(BigDecimal.ONE).compareTo(ROUNDDOWNVALUE) == -1;
 			boolean remainderNotZero = !matrix[row][col].abs().remainder(BigDecimal.ONE).equals(BigDecimal.ZERO);
-			if(matrix[row][col].abs().remainder(BigDecimal.ONE).compareTo(roundUpValue) == 1 
+			if(matrix[row][col].abs().remainder(BigDecimal.ONE).compareTo(ROUNDUPVALUE) == 1 
 					||(roundDown&&remainderNotZero)) 
 				matrix[row][col] = new BigDecimal(matrix[row][col].floatValue()+"");
 			if(matrix[row][col].compareTo(BigDecimal.ZERO) == 0)
 				matrix[row][col] = BigDecimal.ZERO;
-			if(matrix[row][col].abs().compareTo(roundoff) == -1)
+			if(matrix[row][col].abs().compareTo(ROUNDOFF) == -1)
 				matrix[row][col] = BigDecimal.ZERO;
 
 		}
@@ -137,14 +137,14 @@ public class Matrix {
 	public void scalarDivision(int row, BigDecimal divisor) {
 		for(int col = 0; col < matrixCol; col++){
 			matrix[row][col] = matrix[row][col].divide(divisor, MathContext.DECIMAL64);
-			boolean roundDown = matrix[row][col].abs().remainder(BigDecimal.ONE).compareTo(roundDownValue) == -1;
+			boolean roundDown = matrix[row][col].abs().remainder(BigDecimal.ONE).compareTo(ROUNDDOWNVALUE) == -1;
 			boolean remainderNotZero = !matrix[row][col].abs().remainder(BigDecimal.ONE).equals(BigDecimal.ZERO);
-			if(matrix[row][col].abs().remainder(BigDecimal.ONE).compareTo(roundUpValue) == 1 
+			if(matrix[row][col].abs().remainder(BigDecimal.ONE).compareTo(ROUNDUPVALUE) == 1 
 					||(roundDown&&remainderNotZero)) 
 				matrix[row][col] = new BigDecimal(matrix[row][col].floatValue()+"");
 			if(matrix[row][col].compareTo(BigDecimal.ZERO) == 0)
 				matrix[row][col] = BigDecimal.ZERO;
-			if(matrix[row][col].abs().compareTo(roundoff) == -1)
+			if(matrix[row][col].abs().compareTo(ROUNDOFF) == -1)
 				matrix[row][col] = BigDecimal.ZERO;
 			
 
@@ -157,14 +157,14 @@ public class Matrix {
 	public void addRows(int row1, int row2, BigDecimal scale) {
 		for(int col = 0; col < matrixCol; col++){
 			matrix[row1][col] = matrix[row1][col].add(matrix[row2][col].multiply(scale));
-			boolean roundDown = matrix[row1][col].abs().remainder(BigDecimal.ONE).compareTo(roundDownValue) == -1;
+			boolean roundDown = matrix[row1][col].abs().remainder(BigDecimal.ONE).compareTo(ROUNDDOWNVALUE) == -1;
 			boolean remainderNotZero = !matrix[row1][col].abs().remainder(BigDecimal.ONE).equals(BigDecimal.ZERO);
-			if(matrix[row1][col].abs().remainder(BigDecimal.ONE).compareTo(roundUpValue) == 1 
+			if(matrix[row1][col].abs().remainder(BigDecimal.ONE).compareTo(ROUNDUPVALUE) == 1 
 					||(roundDown&&remainderNotZero)) 
 				matrix[row1][col] = new BigDecimal(matrix[row1][col].floatValue()+"");
 			if(matrix[row1][col].compareTo(BigDecimal.ZERO) == 0)
 				matrix[row1][col] = BigDecimal.ZERO;
-			if(matrix[row1][col].abs().compareTo(roundoff) == -1)
+			if(matrix[row1][col].abs().compareTo(ROUNDOFF) == -1)
 				matrix[row1][col] = BigDecimal.ZERO;
 		}
 
@@ -173,14 +173,14 @@ public class Matrix {
 	public static void addRows(BigDecimal[][] matrix,int matrixCol, int row1, int row2, BigDecimal scale) {
 		for(int col = 0; col < matrixCol; col++){
 			matrix[row1][col] = matrix[row1][col].add(matrix[row2][col].multiply(scale));
-			boolean roundDown = matrix[row1][col].abs().remainder(BigDecimal.ONE).compareTo(roundDownValue) == -1;
+			boolean roundDown = matrix[row1][col].abs().remainder(BigDecimal.ONE).compareTo(ROUNDDOWNVALUE) == -1;
 			boolean remainderNotZero = !matrix[row1][col].abs().remainder(BigDecimal.ONE).equals(BigDecimal.ZERO);
-			if(matrix[row1][col].abs().remainder(BigDecimal.ONE).compareTo(roundUpValue) == 1 
+			if(matrix[row1][col].abs().remainder(BigDecimal.ONE).compareTo(ROUNDUPVALUE) == 1 
 					||(roundDown&&remainderNotZero)) 
 				matrix[row1][col] = new BigDecimal(matrix[row1][col].floatValue()+"");
 			if(matrix[row1][col].compareTo(BigDecimal.ZERO) == 0)
 				matrix[row1][col] = BigDecimal.ZERO;
-			if(matrix[row1][col].abs().compareTo(roundoff) == -1)
+			if(matrix[row1][col].abs().compareTo(ROUNDOFF) == -1)
 				matrix[row1][col] = BigDecimal.ZERO;
 		}
 
@@ -203,14 +203,14 @@ public class Matrix {
 
 	public BigDecimal divide(BigDecimal dividend, BigDecimal divisor) {
 		BigDecimal value = dividend.divide(divisor, MathContext.DECIMAL64);
-		boolean roundDown = value.abs().remainder(BigDecimal.ONE).compareTo(roundDownValue) == -1;
+		boolean roundDown = value.abs().remainder(BigDecimal.ONE).compareTo(ROUNDDOWNVALUE) == -1;
 		boolean remainderNotZero = !value.abs().remainder(BigDecimal.ONE).equals(BigDecimal.ZERO);
-		if(value.abs().remainder(BigDecimal.ONE).compareTo(roundUpValue) == 1 
+		if(value.abs().remainder(BigDecimal.ONE).compareTo(ROUNDUPVALUE) == 1 
 				||(roundDown&&remainderNotZero)) 
 			value = new BigDecimal(value.floatValue()+"");
 		if(value.compareTo(BigDecimal.ZERO) == 0)
 			value = BigDecimal.ZERO;
-		if(value.abs().compareTo(roundoff) == -1)
+		if(value.abs().compareTo(ROUNDOFF) == -1)
 			value = BigDecimal.ZERO;
 		return value;
 	}
@@ -262,10 +262,9 @@ public class Matrix {
         }
 		Matrix matrix = new Matrix(mat, false);
 		System.out.println(matrix);
-		matrix.LU();
+		Matrix.determinant(matrix);
 		System.out.println(matrix);
-		System.out.println(Arrays.deepToString(matrix.getL()));
-		System.out.println(Arrays.deepToString(matrix.getU()));
+		System.out.println(Matrix.determinant(matrix));
 		
 	}
 
@@ -362,7 +361,7 @@ public class Matrix {
 					pivotRow = numPivots;
 
 					for(int row = pivotRow + 1;row < matrixRow;row++) {
-						addRows(row,pivotRow,matrix[row][col].multiply(negativeOne));
+						addRows(row,pivotRow,matrix[row][col].multiply(NEGATIVEONE));
 						if(augmented && impossibleRow(row)) {
 							noSolution = true;
 							break;
@@ -386,7 +385,7 @@ public class Matrix {
 				int leadingEntry = leadingEntryPosition(row);
 				if(leadingEntry != -1) {
 					for(int rowsAbove = row - 1; rowsAbove >= 0; rowsAbove--) {
-						addRows(rowsAbove,row,matrix[rowsAbove][leadingEntry].multiply(negativeOne));
+						addRows(rowsAbove,row,matrix[rowsAbove][leadingEntry].multiply(NEGATIVEONE));
 					}
 				}
 			}
@@ -413,7 +412,7 @@ public class Matrix {
 				for(int variableCol = col + 1 ;variableCol < matrixCol-1; variableCol++) {
 					if(!matrix[pivotRow][variableCol].equals(BigDecimal.ZERO)) {
 						builder.append(" + ");
-						builder.append(matrix[pivotRow][variableCol].multiply(negativeOne));
+						builder.append(matrix[pivotRow][variableCol].multiply(NEGATIVEONE));
 						builder.append("X");
 						builder.append((variableCol+1));
 					}
@@ -437,7 +436,7 @@ public class Matrix {
 				Vector v = new Vector(matrixCol -1);
 				for(int row = 0; row < matrixRow; row++) {
 					if(col < matrixCol -1)
-						v.vector[row] = matrix[row][col].multiply(negativeOne);
+						v.vector[row] = matrix[row][col].multiply(NEGATIVEONE);
 					else 
 						v.vector[row] = matrix[row][col];
 				}
@@ -524,7 +523,7 @@ public class Matrix {
 				for(int row = pivotRow + 1;row < matrixRow;row++) {
 					BigDecimal coeffiecent = divide(U[row][col],U[pivotRow][col]);
 					L[row][col] = coeffiecent;
-					addRows(U, matrixCol, row, pivotRow, coeffiecent.multiply(negativeOne));
+					addRows(U, matrixCol, row, pivotRow, coeffiecent.multiply(NEGATIVEONE));
 				}
 				numPivots++;
 			}
@@ -542,6 +541,108 @@ public class Matrix {
 		}
 		return true;
 	}
+	//Mat is an N X N matrix
+	public static BigDecimal determinant(Matrix mat) {
+		if(mat.matrixRow == 2) {
+			return mat.matrix[0][0].multiply(mat.matrix[1][1]).subtract(mat.matrix[1][0].multiply(mat.matrix[0][1]));
+		}
+		//Determine if a one exists
+		int oneX = -1;
+		int oneY = -1;
+		for(int row = 0;oneX == -1 && row < mat.matrixRow; row++) 
+			for(int col = 0;oneX == -1 && col < mat.matrixCol; col++) {
+				if(mat.matrix[row][col].equals(BigDecimal.ONE)) {
+					oneX = col;
+					oneY = row;
+				}
+			}
+		if(oneX != -1) {
+			for(int row = 0; row < mat.matrixRow; row++) {
+				if(row != oneY) {
+					mat.addRows(row, oneX, mat.matrix[row][oneX].multiply(NEGATIVEONE));
+				}
+			}
+			
+			Matrix recurse = new Matrix(generateRecurseArray(mat,oneY, oneX),false);
+			return determinant(recurse);
+		} else {
+			int rawPos = mat.mostZeroRowOrCol();
+			if(rawPos >= mat.matrixRow) {
+				int workingCol = rawPos - mat.matrixRow;
+				BigDecimal det = new BigDecimal("0");
+				for(int workingRow = 0; workingRow < mat.matrixRow; workingRow++) {
+					det = det.add(determinant(new Matrix(generateRecurseArray(mat,workingRow, workingCol),false)).multiply(mat.matrix[workingRow][workingCol]));
+				}
+				return det;
+			} else {
+				int workingRow = rawPos;
+				BigDecimal det = new BigDecimal("0");
+				for(int workingCol = 0; workingCol < mat.matrixCol; workingCol++) {
+					det = det.add(determinant(new Matrix(generateRecurseArray(mat,workingRow, workingCol),false)).multiply(mat.matrix[workingRow][workingCol]));
+				}
+				return det;
+			}
+			
+		}
+	}
+
+	private int mostZeroRowOrCol() {
+		int zeroCount = 0;
+		int pos = 0;
+		for(int row = 0; row < matrixRow; row++) {
+			int zeroCountTest = zeroCountRow(row);
+			if(zeroCountTest < zeroCount) {
+				zeroCount = zeroCountTest;
+				pos = row;
+			}
+		}
+		
+		for(int col = 0; col < matrixCol; col++) {
+			int zeroCountTest = zeroCountCol(col);
+			if(zeroCountTest < zeroCount) {
+				zeroCount = zeroCountTest;
+				pos = col+matrixRow;
+			}
+		}
+		return pos;
+	}
+	
+	private int zeroCountRow(int row) {
+		int zeroCount = 0;
+		for(int col = 0; col < matrixCol; col++) {
+			if(matrix[row][col].equals(BigDecimal.ZERO))
+				zeroCount++;
+		}
+		return zeroCount;
+	}
+	
+	private int zeroCountCol(int col) {
+		int zeroCount = 0;
+		for(int row = 0; row < matrixCol; row++) {
+			if(matrix[row][col].equals(BigDecimal.ZERO))
+				zeroCount++;
+		}
+		return zeroCount;
+	}
+	
+	private static BigDecimal[][] generateRecurseArray(Matrix mat, int ignoreRow, int ignoreCol) {
+		BigDecimal[][] recurseArray = new BigDecimal[mat.matrixRow -1][mat.matrixCol-1];
+		int addRow = 0;
+		int addCol = 0;
+		for(int row = 0;row < mat.matrixRow; row++) 
+			for(int col = 0;col < mat.matrixCol; col++) {
+				if(row != ignoreRow && col != ignoreCol) {
+					recurseArray[addRow][addCol] = mat.matrix[row][col];
+					addCol++;
+					if(addCol % (mat.matrixCol-1) == 0) {
+						addCol = 0;
+						addRow++;
+					}
+				}
+			}
+		return recurseArray;
+	}
+	
 }
 	
 

@@ -41,6 +41,8 @@ public class MatrixScreen {
 	public static final Button rref = new Button("rref");
 	public static final Button L = new Button("L");
 	public static final Button U = new Button("U");
+	public static final Button det = new Button("Determinate");
+	public static final TextField detField = new TextField("N/A");
 	public static final Button prev = new Button("Prev");
 	public static final Button save = new Button("Save");
 	public static final Button load = new Button("Load");
@@ -49,10 +51,13 @@ public class MatrixScreen {
 	public static final Deque<String[][]> prevMatrixStack = new ArrayDeque<String[][]>();
 	public static String[][] saveMatrix;
 	public static void setUp() {
-		matrixFunctions.getChildren().addAll(ref, rref, L, U, prev, save, load, clear);
+		detField.setMinWidth(150);
+		detField.setMaxWidth(150);
+		matrixFunctions.getChildren().addAll(ref, rref, L, U, det ,detField, prev, save, load, clear);
 		MatrixFunctionScrollPane.setFitToHeight(true);
 		MatrixFunctionScrollPane.setFitToWidth(true);
-		pane.setBottom(matrixFunctions);
+		MatrixFunctionScrollPane.setMinHeight(50);
+		pane.setBottom(MatrixFunctionScrollPane);
 		
 		pane.setCenter(box);
 		matrixMaker.getChildren().add(rowsLabel);
@@ -65,6 +70,7 @@ public class MatrixScreen {
             public void handle(ActionEvent e) {
             	prevMatrixStack.clear();
             	saveMatrix = null;
+            	detField.setText("N/A");
             	box.getChildren().removeAll(box.getChildren());
             	int row = Integer.parseInt(rows.getText());
             	int col = Integer.parseInt(cols.getText());
@@ -164,6 +170,22 @@ public class MatrixScreen {
             	for(int i = 0; i < mat.length; i++)
             		for(int q = 0; q < mat[0].length; q++)
             			matrixT[i][q].setText(""+matrix.getU()[i][q]);
+            }
+        });
+		
+		det.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+            	String[][] prevMatrixT = new String[matrixT.length][matrixT[0].length];
+            	BigDecimal[][] mat = new BigDecimal[matrixT.length][matrixT[0].length];
+            	for(int i = 0; i < mat.length; i++)
+            		for(int q = 0; q < mat[0].length; q++) {
+            			mat[i][q] = new BigDecimal(matrixT[i][q].getText());
+            			prevMatrixT[i][q] = matrixT[i][q].getText();
+            		}
+            	Matrix matrix = new Matrix(mat,false);
+            	BigDecimal dec = Matrix.determinant(matrix);
+            	detField.setText(dec.toString());
             }
         });
 		
