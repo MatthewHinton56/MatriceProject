@@ -42,6 +42,7 @@ public class MatrixScreen {
 	public static final Button L = new Button("L");
 	public static final Button U = new Button("U");
 	public static final Button det = new Button("Determinate");
+	public static final Button inverse = new Button("Inverse");
 	public static final TextField detField = new TextField("N/A");
 	public static final Button prev = new Button("Prev");
 	public static final Button save = new Button("Save");
@@ -53,7 +54,7 @@ public class MatrixScreen {
 	public static void setUp() {
 		detField.setMinWidth(150);
 		detField.setMaxWidth(150);
-		matrixFunctions.getChildren().addAll(ref, rref, L, U, det ,detField, prev, save, load, clear);
+		matrixFunctions.getChildren().addAll(ref, rref, L, U, det, detField, inverse, prev, save, load, clear);
 		MatrixFunctionScrollPane.setFitToHeight(true);
 		MatrixFunctionScrollPane.setFitToWidth(true);
 		MatrixFunctionScrollPane.setMinHeight(50);
@@ -186,6 +187,31 @@ public class MatrixScreen {
             	Matrix matrix = new Matrix(mat,false);
             	BigDecimal dec = Matrix.determinant(matrix);
             	detField.setText(dec.toString());
+            }
+        });
+		
+		inverse.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+            	String[][] prevMatrixT = new String[matrixT.length][matrixT[0].length];
+            	BigDecimal[][] mat = new BigDecimal[matrixT.length][matrixT[0].length];
+            	for(int i = 0; i < mat.length; i++)
+            		for(int q = 0; q < mat[0].length; q++) {
+            			mat[i][q] = new BigDecimal(matrixT[i][q].getText());
+            			prevMatrixT[i][q] = matrixT[i][q].getText();
+            		}
+            	prevMatrixStack.add(prevMatrixT);
+            	Matrix matrix = new Matrix(mat,false);
+            	matrix = Matrix.inverse(matrix);
+            	if(matrix != null) {
+            	for(int i = 0; i < mat.length; i++)
+            		for(int q = 0; q < mat.length; q++)
+            			matrixT[i][q].setText(""+matrix.matrix[i][q]);
+            	} else {
+            		for(int i = 0; i < mat.length; i++)
+                		for(int q = 0; q < mat[0].length; q++)
+                			matrixT[i][q].setText("N/A");
+            	}
             }
         });
 		
