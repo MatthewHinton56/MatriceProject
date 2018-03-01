@@ -8,10 +8,7 @@ import java.util.Queue;
 import java.util.Scanner;
 public class Matrix {
 
-	public static final Fraction NEGATIVEONE = new Fraction("-1");
-	public static final Fraction ROUNDOFF = new Fraction(".001");
-	public static final Fraction ROUNDUPVALUE = new Fraction(".999");
-	public static final Fraction ROUNDDOWNVALUE = new Fraction(".0001");
+	private static final Fraction NEGATIVEONE = new Fraction("-1");
 	final Fraction[][] matrix, L, U;
 	final int matrixRow;
 	final int matrixCol;
@@ -275,7 +272,6 @@ public class Matrix {
 			int numPivots = 0;
 			for(int col = 0; col < matrixCol; col++) {
 				if(!allZeroCol(col,numPivots)) {
-					System.out.println(this);
 					int pivotRow = -1;
 					//System.out.println(this);
 					//identify if a one is a non pivot row.
@@ -320,7 +316,7 @@ public class Matrix {
 					pivotRows[pivotRow] = true;
 					pivotCols[col] = true;
 					numPivots++;
-				}	
+				}
 			}
 		}
 		ref = true;	
