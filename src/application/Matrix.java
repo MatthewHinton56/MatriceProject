@@ -653,6 +653,19 @@ public class Matrix {
 		return ret;
 	}
 	
+	public static Vector cramerRule(Matrix mat, Vector v) { 
+		if(!determinant(mat).equals(BigDecimal.ZERO)) {
+		Vector ret = new Vector(v.getNumRows());
+		for(int col = 0; col < mat.matrixCol; col++) {
+			BigDecimal x = determinant(replaceColumn(mat, v, col));
+			ret.vector[col] = x;
+		}
+		return ret;
+		}
+		return null;
+	}
+	
+	
 	
 	
 	private int mostZeroRowOrCol() {
