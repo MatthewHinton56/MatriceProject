@@ -1,6 +1,5 @@
 package application;
 
-import java.math.BigDecimal;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -101,10 +100,10 @@ public class MatrixScreen {
             @Override
             public void handle(ActionEvent e) {
             	String[][] prevMatrixT = new String[matrixT.length][matrixT[0].length];
-            	BigDecimal[][] mat = new BigDecimal[matrixT.length][matrixT[0].length];
+            	Fraction[][] mat = new Fraction[matrixT.length][matrixT[0].length];
             	for(int i = 0; i < mat.length; i++)
             		for(int q = 0; q < mat[0].length; q++) {
-            			mat[i][q] = new BigDecimal(matrixT[i][q].getText());
+            			mat[i][q] = new Fraction(matrixT[i][q].getText());
             			prevMatrixT[i][q] = matrixT[i][q].getText();
             		}
             	prevMatrixStack.add(prevMatrixT);
@@ -119,10 +118,10 @@ public class MatrixScreen {
             @Override
             public void handle(ActionEvent e) {
             	String[][] prevMatrixT = new String[matrixT.length][matrixT[0].length];
-            	BigDecimal[][] mat = new BigDecimal[matrixT.length][matrixT[0].length];
+            	Fraction[][] mat = new Fraction[matrixT.length][matrixT[0].length];
             	for(int i = 0; i < mat.length; i++)
             		for(int q = 0; q < mat[0].length; q++) {
-            			mat[i][q] = new BigDecimal(matrixT[i][q].getText());
+            			mat[i][q] = new Fraction(matrixT[i][q].getText());
             			prevMatrixT[i][q] = matrixT[i][q].getText();
             		}
             	prevMatrixStack.add(prevMatrixT);
@@ -138,10 +137,10 @@ public class MatrixScreen {
             @Override
             public void handle(ActionEvent e) {
             	String[][] prevMatrixT = new String[matrixT.length][matrixT[0].length];
-            	BigDecimal[][] mat = new BigDecimal[matrixT.length][matrixT[0].length];
+            	Fraction[][] mat = new Fraction[matrixT.length][matrixT[0].length];
             	for(int i = 0; i < mat.length; i++)
             		for(int q = 0; q < mat[0].length; q++) {
-            			mat[i][q] = new BigDecimal(matrixT[i][q].getText());
+            			mat[i][q] = new Fraction(matrixT[i][q].getText());
             			prevMatrixT[i][q] = matrixT[i][q].getText();
             		}
             	prevMatrixStack.add(prevMatrixT);
@@ -159,10 +158,10 @@ public class MatrixScreen {
             @Override
             public void handle(ActionEvent e) {
             	String[][] prevMatrixT = new String[matrixT.length][matrixT[0].length];
-            	BigDecimal[][] mat = new BigDecimal[matrixT.length][matrixT[0].length];
+            	Fraction[][] mat = new Fraction[matrixT.length][matrixT[0].length];
             	for(int i = 0; i < mat.length; i++)
             		for(int q = 0; q < mat[0].length; q++) {
-            			mat[i][q] = new BigDecimal(matrixT[i][q].getText());
+            			mat[i][q] = new Fraction(matrixT[i][q].getText());
             			prevMatrixT[i][q] = matrixT[i][q].getText();
             		}
             	prevMatrixStack.add(prevMatrixT);
@@ -178,14 +177,14 @@ public class MatrixScreen {
             @Override
             public void handle(ActionEvent e) {
             	String[][] prevMatrixT = new String[matrixT.length][matrixT[0].length];
-            	BigDecimal[][] mat = new BigDecimal[matrixT.length][matrixT[0].length];
+            	Fraction[][] mat = new Fraction[matrixT.length][matrixT[0].length];
             	for(int i = 0; i < mat.length; i++)
             		for(int q = 0; q < mat[0].length; q++) {
-            			mat[i][q] = new BigDecimal(matrixT[i][q].getText());
+            			mat[i][q] = new Fraction(matrixT[i][q].getText());
             			prevMatrixT[i][q] = matrixT[i][q].getText();
             		}
             	Matrix matrix = new Matrix(mat,false);
-            	BigDecimal dec = Matrix.determinant(matrix);
+            	Fraction dec = Matrix.determinant(matrix);
             	detField.setText(dec.toString());
             }
         });
@@ -194,10 +193,10 @@ public class MatrixScreen {
             @Override
             public void handle(ActionEvent e) {
             	String[][] prevMatrixT = new String[matrixT.length][matrixT[0].length];
-            	BigDecimal[][] mat = new BigDecimal[matrixT.length][matrixT[0].length];
+            	Fraction[][] mat = new Fraction[matrixT.length][matrixT[0].length];
             	for(int i = 0; i < mat.length; i++)
             		for(int q = 0; q < mat[0].length; q++) {
-            			mat[i][q] = new BigDecimal(matrixT[i][q].getText());
+            			mat[i][q] = new Fraction(matrixT[i][q].getText());
             			prevMatrixT[i][q] = matrixT[i][q].getText();
             		}
             	prevMatrixStack.add(prevMatrixT);

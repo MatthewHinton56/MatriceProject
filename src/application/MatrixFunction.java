@@ -1,6 +1,5 @@
 package application;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 
 public class MatrixFunction {
@@ -39,7 +38,7 @@ public class MatrixFunction {
 		codomain = mat.matrixRow;
 	}
 	
-	public MatrixFunction(BigDecimal[][] mat) {
+	public MatrixFunction(Fraction[][] mat) {
 		this(new Matrix(mat, false));
 	}
 	

@@ -1,6 +1,5 @@
 package application;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 
 import javafx.event.ActionEvent;
@@ -59,7 +58,7 @@ public class FunctionScreen {
 				if(function != null) {
 					Vector v = new Vector(row);
 					for(int rowO = 0; rowO < row; rowO++) {
-						v.vector[rowO] = new BigDecimal(matrixT[rowO][col+1].getText());
+						v.vector[rowO] = new Fraction(matrixT[rowO][col+1].getText());
 					}
 					if(function.isCinRange(v)) {
 						existenceLabel.setStyle("-fx-background-color:red");
@@ -77,7 +76,7 @@ public class FunctionScreen {
 				if(function != null) {
 					Vector v = new Vector(row);
 					for(int rowO = 0; rowO < row; rowO++) {
-						v.vector[rowO] = new BigDecimal(matrixT[rowO][col+1].getText());
+						v.vector[rowO] = new Fraction(matrixT[rowO][col+1].getText());
 					}
 					String[] input = function.generateInputForC(v);
 					for(int row = 0; row < input.length; row++) {
@@ -96,7 +95,7 @@ public class FunctionScreen {
 				if(function != null) {
 					Vector v = new Vector(col);
 					for(int row = 0; row < col; row++) {
-						v.vector[row] = new BigDecimal(matrixT[row][col].getText());
+						v.vector[row] = new Fraction(matrixT[row][col].getText());
 					}
 					v = function.evaluate(v);
 					String[] output = v.getVector();
@@ -170,10 +169,10 @@ public class FunctionScreen {
 		createFunction.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-            	BigDecimal[][] mat = new BigDecimal[row][col];
+            	Fraction[][] mat = new Fraction[row][col];
             	for(int i = 0; i < mat.length; i++)
             		for(int q = 0; q < mat[0].length; q++)
-            			mat[i][q] = new BigDecimal(matrixT[i][q].getText());
+            			mat[i][q] = new Fraction(matrixT[i][q].getText());
             	function = new MatrixFunction(mat);
             	if(function.onto)
             		onto.setStyle("-fx-background-color:red");
