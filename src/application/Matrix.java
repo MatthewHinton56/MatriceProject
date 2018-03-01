@@ -261,10 +261,10 @@ public class Matrix {
         		mat[row][col] = new BigDecimal(s);
         }
 		Matrix matrix = new Matrix(mat, false);
-		System.out.println(matrix);
-		Matrix.determinant(matrix);
-		System.out.println(matrix);
-		System.out.println(Matrix.determinant(matrix));
+		//System.out.println(matrix);
+		//Matrix.determinant((Matrix)matrix.clone());
+		//System.out.println(matrix);
+		System.out.println(Matrix.determinant((Matrix)matrix.clone()));
 		
 	}
 
@@ -543,17 +543,19 @@ public class Matrix {
 	}
 	//Mat is an N X N matrix
 	public static BigDecimal determinant(Matrix mat) {
+		System.out.println(mat);
 		if(mat.matrixRow == 2) {
 			return mat.matrix[0][0].multiply(mat.matrix[1][1]).subtract(mat.matrix[1][0].multiply(mat.matrix[0][1]));
 		}
 		BigDecimal[][] sign = new BigDecimal[mat.matrixRow][mat.matrixRow];
 		BigDecimal val = BigDecimal.ONE;
-		for(int row = 0; row < mat.matrixRow; row++)
+		for(int row = 0; row < mat.matrixRow; row++) {
 			for(int col = 0; col < mat.matrixRow; col++) {
 				sign[row][col] = val;
 				val = val.multiply(Matrix.NEGATIVEONE);
 			}
-		//System.out.println(Arrays.deepToString(sign));
+			if(mat.matrixRow%2 == 0)val = val.multiply(Matrix.NEGATIVEONE);
+		}
 		//Determine if a one exists
 		int oneX = -1;
 		int oneY = -1;
@@ -574,18 +576,23 @@ public class Matrix {
 			return sign[oneY][oneX].multiply(determinant(recurse));
 		} else {
 			int rawPos = mat.mostZeroRowOrCol();
+
 			if(rawPos >= mat.matrixRow) {
 				int workingCol = rawPos - mat.matrixRow;
 				BigDecimal det = new BigDecimal("0");
 				for(int workingRow = 0; workingRow < mat.matrixRow; workingRow++) {
+					if(!mat.matrix[workingRow][workingCol].equals(BigDecimal.ZERO)) {
 					det = det.add(sign[workingRow][workingCol].multiply(determinant(new Matrix(generateRecurseArray(mat,workingRow, workingCol),false)).multiply(mat.matrix[workingRow][workingCol])));
+					}
 				}
 				return det;
 			} else {
 				int workingRow = rawPos;
 				BigDecimal det = new BigDecimal("0");
 				for(int workingCol = 0; workingCol < mat.matrixCol; workingCol++) {
+					if(!mat.matrix[workingRow][workingCol].equals(BigDecimal.ZERO)) {
 					det = det.add(sign[workingRow][workingCol].multiply(determinant(new Matrix(generateRecurseArray(mat,workingRow, workingCol),false)).multiply(mat.matrix[workingRow][workingCol])));
+					}
 				}
 				return det;
 			}
@@ -598,7 +605,7 @@ public class Matrix {
 		int pos = 0;
 		for(int row = 0; row < matrixRow; row++) {
 			int zeroCountTest = zeroCountRow(row);
-			if(zeroCountTest < zeroCount) {
+			if(zeroCountTest > zeroCount) {
 				zeroCount = zeroCountTest;
 				pos = row;
 			}
@@ -606,7 +613,7 @@ public class Matrix {
 		
 		for(int col = 0; col < matrixCol; col++) {
 			int zeroCountTest = zeroCountCol(col);
-			if(zeroCountTest < zeroCount) {
+			if(zeroCountTest > zeroCount) {
 				zeroCount = zeroCountTest;
 				pos = col+matrixRow;
 			}
