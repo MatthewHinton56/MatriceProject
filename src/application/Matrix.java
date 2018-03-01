@@ -263,8 +263,8 @@ public class Matrix {
 		Matrix matrix = new Matrix(mat, false);
 		//System.out.println(matrix);
 		//Matrix.determinant((Matrix)matrix.clone());
-		//System.out.println(matrix);
-		System.out.println(Matrix.determinant((Matrix)matrix.clone()));
+		System.out.println(Matrix.determinant(matrix));
+		System.out.println(Matrix.cramerInverse((Matrix)matrix.clone()));
 		
 	}
 
@@ -511,6 +511,7 @@ public class Matrix {
 		}
 		return augCol;
 	}
+	
 	//Calculates the Lower and Upper Triangles of Matrix A
 	public void LU() {
 		if(!LU) {
@@ -543,10 +544,14 @@ public class Matrix {
 	}
 	//Mat is an N X N matrix
 	public static BigDecimal determinant(Matrix mat) {
-		System.out.println(mat);
 		if(mat.matrixRow == 2) {
 			return mat.matrix[0][0].multiply(mat.matrix[1][1]).subtract(mat.matrix[1][0].multiply(mat.matrix[0][1]));
 		}
+		
+		if(mat.matrixCol == 3) {
+			return determinant3X3(mat.matrix);
+		}
+		
 		BigDecimal[][] sign = new BigDecimal[mat.matrixRow][mat.matrixRow];
 		BigDecimal val = BigDecimal.ONE;
 		for(int row = 0; row < mat.matrixRow; row++) {
@@ -599,7 +604,57 @@ public class Matrix {
 			
 		}
 	}
+	
+	
+	//Basket Weaving
+	private static BigDecimal determinant3X3(BigDecimal[][] a) {
+		BigDecimal det =  BigDecimal.ZERO;
+		det = det.add(a[0][0].multiply(a[1][1]).multiply(a[2][2]));
+		det = det.add(a[0][1].multiply(a[1][2]).multiply(a[2][0]));
+		det = det.add(a[0][2].multiply(a[1][0]).multiply(a[2][1]));
+		
+		det = det.subtract(a[2][0].multiply(a[1][1]).multiply(a[0][2]));
+		det = det.subtract(a[2][1].multiply(a[1][2]).multiply(a[0][0]));
+		det = det.subtract(a[2][2].multiply(a[1][0]).multiply(a[0][1]));
+		return det;
+	}
 
+	public static Matrix cramerInverse(Matrix mat) {
+		BigDecimal det = determinant(mat);
+		if(!det.equals("0")) {
+			Matrix m = new Matrix(mat.matrixRow,mat.matrixCol,false);
+			Vector[] indentity = new Vector[mat.matrixCol];
+			for(int i = 0; i < indentity.length; i++) {
+				Vector v = new Vector(mat.matrixRow);
+				v.vector[i] = BigDecimal.ONE;
+				indentity[i] = v;
+			}
+			for(int row = 0; row < mat.matrixRow; row++)
+				for(int col = 0; col < mat.matrixCol; col++) {
+			
+					BigDecimal c = determinant(replaceColumn(mat,indentity[col],row));
+					m.matrix[row][col] = mat.divide(c, det);
+				}
+			return m;
+		}
+		return null;
+	}
+	
+	public static Matrix replaceColumn(Matrix mat,Vector v, int replaceCol) {
+		Matrix ret = new Matrix(mat.matrixRow,mat.matrixCol,false);
+		for(int row = 0; row < mat.matrixRow; row++)
+			for(int col = 0; col < mat.matrixCol; col++) {
+				if(col == replaceCol)
+					ret.matrix[row][col] = v.vector[row];
+				else
+					ret.matrix[row][col] = mat.matrix[row][col];
+			}
+		
+		return ret;
+	}
+	
+	
+	
 	private int mostZeroRowOrCol() {
 		int zeroCount = 0;
 		int pos = 0;
