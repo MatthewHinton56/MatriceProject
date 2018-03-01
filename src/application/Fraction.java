@@ -126,25 +126,24 @@ public class Fraction implements Comparable<Fraction>{
 
 	public Fraction subtract(Fraction subtract) {
 		long lcm = getLCM(this.denominator, subtract.denominator);
-		Fraction frac1 = fixSign(this.scale(lcm));
-		Fraction frac2 = fixSign(subtract.scale(lcm));
-		return  fixSign(new Fraction(frac1.numerator - frac2.numerator, frac1.denominator));
+		Fraction frac1 = fixSign(this.scale(lcm/this.denominator));
+		Fraction frac2 = fixSign(subtract.scale(lcm/subtract.denominator));
+		return  fixSign(new Fraction(frac1.numerator - frac2.numerator,lcm));
 	}
 
 
 	public Fraction add(Fraction add) {
 		long lcm = getLCM(this.denominator, add.denominator);
-		Fraction frac1 = fixSign(this.scale(lcm));
-		Fraction frac2 = fixSign(add.scale(lcm));
-		System.out.println(frac1 + " "+ frac2);
-		return new Fraction(frac1.numerator + frac2.numerator, frac1.denominator);
+		Fraction frac1 = fixSign(this.scale(lcm/this.denominator));
+		Fraction frac2 = fixSign(add.scale(lcm/add.denominator));
+		return new Fraction(frac1.numerator + frac2.numerator, lcm);
 	}
 
 
 	public Long remainder(Fraction leading) {
 		long lcm = getLCM(this.denominator, leading.denominator);
-		Fraction frac1 = fixSign(this.scale(lcm));
-		Fraction frac2 = fixSign(leading.scale(lcm));
+		Fraction frac1 = fixSign(this.scale(lcm/this.denominator));
+		Fraction frac2 = fixSign(leading.scale(lcm/leading.denominator));
 		
 		return frac1.numerator % frac2.numerator;
 	}
@@ -169,20 +168,23 @@ public class Fraction implements Comparable<Fraction>{
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(getGCD(-2,4));
+		Fraction frac1 = new Fraction("-20");
+		Fraction frac2 = new Fraction("794/51");
+		System.out.println(frac1+" "+frac2+" "+ (frac1.add(frac2)));
 	}
 	
-	public static Fraction fixSign(Fraction frac) {
+	private static Fraction fixSign(Fraction frac) {
 		if(frac.numerator < 0 && frac.denominator < 0) {
-			return new Fraction(Math.abs(frac.numerator), Math.abs(frac.denominator));
+			return new Fraction(Math.abs(frac.numerator), Math.abs(frac.denominator),false);
 		} else if(frac.numerator < 0) {
-			return new Fraction(frac.numerator, frac.denominator);
+			return new Fraction(frac.numerator, frac.denominator,false);
 		} else if(frac.denominator < 0) {
-			return new Fraction(frac.numerator * -1, frac.denominator * -1);
+			return new Fraction(frac.numerator * -1, frac.denominator * -1,false);
 		} else {
-			return new Fraction(frac.numerator , frac.denominator );
+			return new Fraction(frac.numerator , frac.denominator ,false);
 		}
 	}
+	
 	
 	
 }
