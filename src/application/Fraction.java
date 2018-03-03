@@ -11,7 +11,10 @@ public class Fraction implements Comparable<Fraction>{
 	final long denominator;
 	
 	public Fraction(String input) {
-		if(input.indexOf("/") == -1 && input.indexOf(".") == -1) {
+		if(input.equals("0/0") || isValid(input)) {
+			numerator = 1;
+			denominator = 1;
+		} else if(input.indexOf("/") == -1 && input.indexOf(".") == -1) {
 			numerator = Long.parseLong(input);
 			denominator = 1;
 		} else if(input.indexOf(".") > -1) {
@@ -48,7 +51,33 @@ public class Fraction implements Comparable<Fraction>{
 		
 	}
 	
-	public Fraction(long numerator, long denominator) {
+	private static boolean isValid(String input) {
+		if(input.length() == 0)
+			return false;
+		int slashCount = 0;
+		int dotCount = 0;
+		for(int i = 0; i < input.length();i++) {
+			char c = input.charAt(i);
+			if(c == '.')
+				dotCount++;
+			if(c == '/')
+				slashCount++;
+			if(!isNumber(c))
+				return false;
+		}
+		if(slashCount > 1)
+			return false;
+		if(dotCount > 1)
+			return false;
+		return !((dotCount == 1) && (slashCount == 1));
+	}
+	public static boolean isNumber(char c) {
+		return c >= 46 && c <= 57;
+	}
+	
+	
+
+	private Fraction(long numerator, long denominator) {
 		this(numerator, denominator, true);
 	}
 	

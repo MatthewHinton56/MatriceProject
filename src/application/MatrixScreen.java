@@ -300,7 +300,7 @@ public class MatrixScreen {
             @Override
             public void handle(ActionEvent e) {
             	if(matrixT != null) {
-            	new AddPopUp();
+            	new ScalePopUp();
             	}
             }
         });
