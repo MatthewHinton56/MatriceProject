@@ -185,6 +185,8 @@ public class Fraction implements Comparable<Fraction>{
 		}
 	}
 	
-	
+	public double getDecimal() {
+		return ((double)numerator)/denominator;
+	}
 	
 }

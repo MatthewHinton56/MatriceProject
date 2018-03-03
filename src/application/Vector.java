@@ -39,7 +39,23 @@ public class Vector {
 		return true;
 	}
 	
+	public Vector add(Vector v) {
+		Vector ret = new Vector(v.getNumRows());
+		for(int row = 0; row < v.getNumRows(); row++)
+			ret.vector[row] = this.vector[row].add(v.vector[row]);
+		return ret;
+	}
+	
+	public Vector scale(Fraction scale) {
+		Vector ret = new Vector(vector.length);
+		for(int row = 0; row < vector.length; row++) 
+			ret.vector[row] = vector[row].multiply(scale);
+		return ret;
+	}
+	
+	
 	public String toString(){
+		
     	StringBuilder builder = new StringBuilder();//uses string builder for efficency
     	String format = "%1$"+maxLength()+"s";
     	for(int row = 0;row<vector.length;row++){
