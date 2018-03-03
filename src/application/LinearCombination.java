@@ -101,7 +101,6 @@ public class LinearCombination {
 	
 	public Vector getMaxXY() {
 		Vector max = outputs.get(0);
-		System.out.println(max);
 		for(Vector v: outputs) {
 			if(v.vector[0].compareTo(max.vector[0]) >= 0 && v.vector[1].compareTo(max.vector[1]) >= 0)
 				max = v;

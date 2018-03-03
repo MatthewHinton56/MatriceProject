@@ -14,8 +14,11 @@ public class Vector {
 	
 	public Vector(Fraction[] vec) {
 		vector = new Fraction[vec.length];
-        for(int row = 0;row<vec.length;row++)
+        for(int row = 0;row<vec.length;row++) {
         	vector[row] = vec[row];
+        	if(vec[row] == null)
+        		vector[row] = Fraction.ZERO;
+        }
 	}
 	
 	public int getNumRows() {

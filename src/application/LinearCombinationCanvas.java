@@ -23,6 +23,7 @@ public class LinearCombinationCanvas extends Canvas{
 			int y = ((height-10)/20)*(10-i)+20;
 			gc.fillText(i+"", x, height/2);
 			gc.fillText(i+"", width/2, y);
+	
 		}
 		gc.strokeLine(0, height/2, width-1, height/2);
 		gc.strokeLine(width/2, 0, width/2, height-1);
@@ -42,6 +43,7 @@ public class LinearCombinationCanvas extends Canvas{
 		gc.setFill(Color.BLACK);
 		gc.fill();
 	}
+
 
 	private void generate2Dpoints() {
 		
@@ -82,8 +84,6 @@ public class LinearCombinationCanvas extends Canvas{
 		gc.setStroke(Color.RED);
 		gc.setGlobalAlpha(1);
 		gc.strokePolygon(pointsX, pointsY, 4);
-		System.out.println(Arrays.toString(pointsX));
-		System.out.println(Arrays.toString(pointsY));
 	}
 	
 }
