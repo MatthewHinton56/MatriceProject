@@ -13,6 +13,7 @@ public class MainStage extends Application {
 		MatrixScreen.setUp();
 		SystemScreen.setUp();
 		FunctionScreen.setUp();
+		CombinationScreen.setUp();
 		primaryStage.setScene(MatrixScreen.scene);
 		primaryStage.show();
 	}

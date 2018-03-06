@@ -11,7 +11,7 @@ public class Fraction implements Comparable<Fraction>{
 	final long denominator;
 	
 	public Fraction(String input) {
-		if(input.equals("0/0") || isValid(input)) {
+		if(input.equals("0/0") || !isValid(input)) {
 			numerator = 1;
 			denominator = 1;
 		} else if(input.indexOf("/") == -1 && input.indexOf(".") == -1) {
@@ -62,8 +62,13 @@ public class Fraction implements Comparable<Fraction>{
 				dotCount++;
 			if(c == '/')
 				slashCount++;
-			if(!isNumber(c))
-				return false;
+			if(i == 0) {
+				if(!isNumberZero(c)) 
+					return false;	
+			} else {
+				if(!isNumberNonZero(c))
+					return false;
+			}
 		}
 		if(slashCount > 1)
 			return false;
@@ -71,11 +76,14 @@ public class Fraction implements Comparable<Fraction>{
 			return false;
 		return !((dotCount == 1) && (slashCount == 1));
 	}
-	public static boolean isNumber(char c) {
+	
+	public static boolean isNumberNonZero(char c) {
 		return c >= 46 && c <= 57;
 	}
 	
-	
+	public static boolean isNumberZero(char c) {
+		return c >= 45 && c <= 57;
+	}
 
 	private Fraction(long numerator, long denominator) {
 		this(numerator, denominator, true);
@@ -179,7 +187,6 @@ public class Fraction implements Comparable<Fraction>{
 
 
 	public Fraction divide(Fraction divisor) {
-		// TODO Auto-generated method stub
 		return this.multiply(divisor.reciprocal());
 	}
 
@@ -197,9 +204,6 @@ public class Fraction implements Comparable<Fraction>{
 	}
 	
 	public static void main(String[] args) {
-		Fraction frac1 = new Fraction("-20");
-		Fraction frac2 = new Fraction("794/51");
-		System.out.println(frac1+" "+frac2+" "+ (frac1.add(frac2)));
 	}
 	
 	private static Fraction fixSign(Fraction frac) {

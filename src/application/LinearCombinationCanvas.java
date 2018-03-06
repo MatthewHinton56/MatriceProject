@@ -38,6 +38,7 @@ public class LinearCombinationCanvas extends Canvas{
 		if(comb.getDimension() == 2) {
 			generate2DAxis();
 			generate2DPlane();
+			//System.out.println(comb.getOutputs());
 			//generate2Dpoints();
 		}
 		gc.setFill(Color.BLACK);
@@ -71,10 +72,11 @@ public class LinearCombinationCanvas extends Canvas{
 		double[] pointsX = new double[4];
 		double[] pointsY = new double[4];
 		int pos = 0;
+		//System.out.println(Arrays.toString(comb.getVectorEdges2D()));
 		for(Vector v: comb.getVectorEdges2D()) {
 			double x = v.vector[0].getDecimal();
 			double y = v.vector[1].getDecimal();
-			 x = ((width-10)/20)*(x +10);
+			 x = ((width-10)/20)*(x +10) +10;
 			 y = ((height-10)/20)*(10 - y)+20;
 			 pointsX[pos] = x;
 			 pointsY[pos] = y;

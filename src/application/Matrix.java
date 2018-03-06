@@ -268,7 +268,13 @@ public class Matrix {
 	}
 
 	public void ref() {
-		if(!ref){
+		int matrixCol = (this.augmented) ? this.matrixCol - 1 : this.matrixCol;
+		for(int row = 0; row < this.matrixRow; row++)
+			if(impossibleRow(row) && augmented)
+			{
+				noSolution = true;
+			}
+		if(!ref && !noSolution){
 			int numPivots = 0;
 			for(int col = 0; col < matrixCol; col++) {
 				if(!allZeroCol(col,numPivots)) {
@@ -307,6 +313,7 @@ public class Matrix {
 					for(int row = pivotRow + 1;row < matrixRow;row++) {
 						addRows(row,pivotRow,matrix[row][col].multiply(NEGATIVEONE));
 						if(augmented && impossibleRow(row)) {
+							
 							noSolution = true;
 							break;
 						}

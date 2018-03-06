@@ -14,10 +14,12 @@ public class SideBar extends ToolBar{
 		Button matrix = new Button("Matrix");
 		Button system = new Button("System");
 		Button function = new Button("Function");
+		Button combination = new Button("Combination");
 		matrix.setOnAction(e -> MainStage.stage.setScene(MatrixScreen.scene));
 		system.setOnAction(e -> MainStage.stage.setScene(SystemScreen.scene));
 		function.setOnAction(e -> MainStage.stage.setScene(FunctionScreen.scene));
-		box.getChildren().addAll(matrix,system,function);
+		combination.setOnAction(e -> MainStage.stage.setScene(CombinationScreen.scene));
+		box.getChildren().addAll(matrix,system,function, combination);
 		this.getItems().add(sPane);
 	}
 	

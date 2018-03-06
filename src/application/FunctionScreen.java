@@ -62,6 +62,8 @@ public class FunctionScreen {
 					}
 					if(function.isCinRange(v)) {
 						existenceLabel.setStyle("-fx-background-color:red");
+					} else {
+						existenceLabel.setStyle("-fx-background-color:white");
 					}
 				}
 				
@@ -125,6 +127,7 @@ public class FunctionScreen {
             	function = null;
             		onto.setStyle("-fx-background-color:white");
             		oneToOne.setStyle("-fx-background-color:white");
+            		existenceLabel.setStyle("-fx-background-color:white");
             	box.getChildren().removeAll(box.getChildren());
             	row = Integer.parseInt(rows.getText());
             	col = Integer.parseInt(cols.getText());

@@ -16,6 +16,7 @@ public class LinearCombination {
 		outputs = new ArrayList<Vector>();
 		lowerBound = -5;
 		upperBound = 5;
+		if(dimension <= 3)
 		generateOutputs();
 	}
 
@@ -25,6 +26,7 @@ public class LinearCombination {
 		outputs = new ArrayList<Vector>();
 		this.lowerBound = lowerBound;
 		this.upperBound = upperBound;
+		if(dimension <= 3)
 		generateOutputs();
 	}
 
@@ -38,7 +40,6 @@ public class LinearCombination {
 		if(pos == vectors.length) {
 			Vector v = new Vector(dimension);
 			for(int i = 0; i < vectors.length; i++) {
-				//System.out.println(vectors[i] + ""+ fractions[i]);
 				v = v.add(vectors[i].scale(fractions[i]));
 			}	
 			outputs.add(v);
@@ -143,6 +144,51 @@ public class LinearCombination {
 		Vector[] vec = {v1,v2,v3,v4};
 		return vec;
 	}
+	
+	public boolean linearIndepenent() {
+		Matrix m = new Matrix(this.vectors, false);
+		m.rref();
+		int index = 0;
+		boolean independent = true;
+		while(independent && index < m.pivotCols.length) {
+			if(!m.pivotCols[index]) {
+				independent = false;
+			}
+			index++;
+		}
+		return independent;
+		}
+
+	public Vector evaluate(Vector v) {
+		Vector ret = new Vector(v.getNumRows());
+		for(int i = 0; i < v.getNumRows(); i++) {
+			ret = ret.add(this.vectors[i].scale(v.vector[i]));
+		}
+		return ret;
+	}
+
+	public String[] generateInputForC(Vector v) {
+		Matrix mat = new Matrix(this.vectors,false);
+		Matrix aug = Matrix.augment(mat, v);
+		aug.rref();
+		if(aug.noSolution) {
+			String[] augCol = new String[aug.matrixRow];
+			for(int row = 0; row < augCol.length; row++) {
+				augCol[row] = "NaN";
+			}
+			return augCol;
+		}
+		
+		return aug.getAugColumn();
+	}
+
+	public boolean isCinRange(Vector v) {
+		Matrix mat = new Matrix(this.vectors,false);
+		mat = Matrix.augment(mat, v);
+		mat.rref();
+		return !mat.noSolution;
+	}
+	
 	
 	
 	

@@ -2,6 +2,7 @@ package application;
 import java.math.MathContext;
 
 public class Vector {
+
 	//Vector x is represented by a horizontal Array;
 	public Fraction[] vector;
 	
@@ -86,5 +87,17 @@ public class Vector {
 			augCol[row] = vector[row].toString();
 		}
 		return augCol;
+	}
+    
+    @Override
+	public boolean equals(Object obj) {
+    	Vector v = (Vector) obj;
+    	if(v.getNumRows() != this.getNumRows())
+    		return false;
+		for(int pos = 0; pos < v.getNumRows(); pos++) {
+			if(!this.vector[pos].equals(v.vector[pos]))
+				return false;
+		}
+		return true;
 	}
 }
