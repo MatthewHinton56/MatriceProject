@@ -149,7 +149,7 @@ public class LinearCombination {
 	
 	public boolean linearIndepenent() {
 		Matrix m = new Matrix(this.vectors, false);
-		m.rref();
+		m.ref();
 		int index = 0;
 		boolean independent = true;
 		while(independent && index < m.pivotCols.length) {

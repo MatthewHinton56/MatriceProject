@@ -279,30 +279,13 @@ public class Matrix {
 			for(int col = 0; col < matrixCol; col++) {
 				if(!allZeroCol(col,numPivots)) {
 					int pivotRow = -1;
-					//System.out.println(this);
-					//identify if a one is a non pivot row.
-					//First identify if 1 in any row
-					for(int row = numPivots;pivotRow == -1 &&  row < matrixRow; row++) {
-						if(leadingValueIsOne(row, col))
-							pivotRow = row;
-					}
-					//If no row with one,find row where all values are have the front value as divisor 
-					if(pivotRow == -1) {
-						for(int row = numPivots;pivotRow == -1 && row < matrixRow; row++) {
-							Fraction divisor = rowDivisibleByLeadingValue(row, col);
-							if(!divisor.equals(Fraction.ZERO)) {
-								pivotRow = row;
-								scalarDivision(pivotRow,divisor);
-							}	
-						}
-					}
 					if(pivotRow == -1) {
 						int row = numPivots;
 						while(pivotRow == -1) {
 							if(!matrix[row][col].equals(Fraction.ZERO)) {
 								Fraction divisor = matrix[row][col];
 								pivotRow = row;
-								scalarDivision(pivotRow,divisor);
+								//scalarDivision(pivotRow,divisor);
 							}
 							row++;
 						}
@@ -311,7 +294,7 @@ public class Matrix {
 					pivotRow = numPivots;
 
 					for(int row = pivotRow + 1;row < matrixRow;row++) {
-						addRows(row,pivotRow,matrix[row][col].multiply(NEGATIVEONE));
+						addRows(row,pivotRow,matrix[row][col].multiply(NEGATIVEONE).divide(matrix[numPivots][col]));
 						if(augmented && impossibleRow(row)) {
 							
 							noSolution = true;
@@ -332,9 +315,11 @@ public class Matrix {
 	public void rref() {
 		if(!rref) {
 			ref();
-			for(int row = matrixRow - 1; row > 0; row--) {
+			for(int row = matrixRow - 1; row >= 0; row--) {
 				int leadingEntry = leadingEntryPosition(row);
 				if(leadingEntry != -1) {
+					Fraction divisor = matrix[row][leadingEntry];
+					if(!divisor.equals(Fraction.ONE))scalarDivision(row,divisor);
 					for(int rowsAbove = row - 1; rowsAbove >= 0; rowsAbove--) {
 						addRows(rowsAbove,row,matrix[rowsAbove][leadingEntry].multiply(NEGATIVEONE));
 					}
