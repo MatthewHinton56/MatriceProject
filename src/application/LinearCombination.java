@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class LinearCombination {
 
 	private Vector[] vectors;
+	private Vector[] basis;
 	private ArrayList<Vector> outputs;
 	private int dimension;
 	private int lowerBound, upperBound;
@@ -16,6 +17,7 @@ public class LinearCombination {
 		outputs = new ArrayList<Vector>();
 		lowerBound = -5;
 		upperBound = 5;
+		basis = colA(vectors);
 		if(dimension <= 3)
 		generateOutputs();
 	}
@@ -32,15 +34,15 @@ public class LinearCombination {
 
 	private void generateOutputs() {
 		int pos = 0;
-		Fraction[] fractions = new Fraction[vectors.length];
+		Fraction[] fractions = new Fraction[basis.length];
 		generateOutputs(pos,fractions);
 	}
 
 	private void generateOutputs(int pos, Fraction[] fractions) {
-		if(pos == vectors.length) {
+		if(pos == basis.length) {
 			Vector v = new Vector(dimension);
-			for(int i = 0; i < vectors.length; i++) {
-				v = v.add(vectors[i].scale(fractions[i]));
+			for(int i = 0; i < basis.length; i++) {
+				v = v.add(basis[i].scale(fractions[i]));
 			}	
 			outputs.add(v);
 		} else {
@@ -188,9 +190,25 @@ public class LinearCombination {
 		mat.rref();
 		return !mat.noSolution;
 	}
-	
-	
-	
+	//Implemented to reduce bigO of output generation from X^Y with X being the bounds of scalar values, and Y being the amount of vectors
+	//to X^V with V being the dimension.
+	public static Vector[] colA(Vector[] vectors) {
+		Matrix m  = new Matrix(vectors, false);
+		m.ref();
+		int pivotCount = 0;
+		for(boolean b: m.pivotCols)
+			pivotCount += (b) ? 1 : 0;
+		Vector[] col = new Vector[pivotCount];
+		int pos = 0;
+		for(int i = 0; i < m.pivotCols.length; i++) {
+			if(m.pivotCols[i]) {
+				col[pos] = vectors[i];
+				pos++;
+			}
+		}
+		return col;
+	}
+ 	
 	
 	
 }
