@@ -37,7 +37,7 @@ public class Matrix {
 			}
 		L = new Fraction[rows][rows];
 		allValuesZero(L);
-		
+
 	}
 
 	public Matrix(Fraction[][] mat,boolean augmented) {
@@ -125,8 +125,8 @@ public class Matrix {
 			matrix[row][col] = matrix[row][col].divide(divisor);
 		}
 	}
-	
-	
+
+
 
 	//Adds row2 scaled by scale to row1
 	public void addRows(int row1, int row2, Fraction scale) {
@@ -135,29 +135,29 @@ public class Matrix {
 		}
 
 	}
-	
+
 	public static void addRows(Fraction[][] matrix,int matrixCol, int row1, int row2, Fraction scale) {
 		for(int col = 0; col < matrixCol; col++){
 			matrix[row1][col] = matrix[row1][col].add(matrix[row2][col].multiply(scale));
 		}	
 
 	}
-	
+
 	public static void swap(Fraction[][] matrix, int matrixCol, int row1, int row2){
 		Fraction[] temp = new Fraction[matrixCol];
 		System.arraycopy(matrix[row1], 0, temp, 0, matrixCol);
 		System.arraycopy(matrix[row2], 0, matrix[row1], 0, matrixCol);
 		System.arraycopy(temp, 0, matrix[row2], 0, matrixCol);
 	}
-	
+
 	public static void allValuesZero(Fraction[][] mat) {
 		for(int row = 0; row < mat.length; row++) 
 			for(int col = 0; col < mat[0].length; col++) {
 				mat[row][col] = Fraction.ZERO;
 			}
 	}
-	
-	
+
+
 
 	public String toString(){
 		StringBuilder builder = new StringBuilder();//uses string builder for efficency
@@ -198,18 +198,18 @@ public class Matrix {
 		scan.nextLine();
 		Fraction[][] mat = new Fraction[rows][cols];
 		for(int row = 0;row<mat.length;row++)
-        	for(int col = 0;col<mat[0].length;col++) {
-        		System.out.print("Enter next value: ");
-        		String s = scan.nextLine();
-        		mat[row][col] = new Fraction(s);
-        }
+			for(int col = 0;col<mat[0].length;col++) {
+				System.out.print("Enter next value: ");
+				String s = scan.nextLine();
+				mat[row][col] = new Fraction(s);
+			}
 		Matrix matrix = new Matrix(mat, false);
 		//System.out.println(matrix);
 		//Matrix.determinant((Matrix)matrix.clone());
 		System.out.println(matrix);
 		matrix.rref();
 		System.out.println(matrix);
-		
+
 	}
 
 	public Fraction[][] getL() {
@@ -258,7 +258,7 @@ public class Matrix {
 		}
 		return -1;
 	}
-	
+
 	public static int firstNonZeroValue(Fraction[][] mat, int matrixRow, int col, int start) {
 		for(int row = start; row < matrixRow; row++ ) {
 			if(!mat[row][col].equals(Fraction.ZERO)) 	
@@ -296,7 +296,7 @@ public class Matrix {
 					for(int row = pivotRow + 1;row < matrixRow;row++) {
 						addRows(row,pivotRow,matrix[row][col].multiply(NEGATIVEONE).divide(matrix[numPivots][col]));
 						if(augmented && impossibleRow(row)) {
-							
+
 							noSolution = true;
 							break;
 						}
@@ -428,7 +428,7 @@ public class Matrix {
 				matrix.matrix[row][col] = this.matrix[row][col];
 		return matrix;
 	}
-	
+
 	public static Matrix augment(Matrix matrix, Vector v) {
 		Matrix matrixA = new Matrix(matrix.matrixRow,matrix.matrixCol+1,true);
 		for(int row = 0; row < matrix.matrixRow; row++)
@@ -447,24 +447,24 @@ public class Matrix {
 		}
 		return augCol;
 	}
-	
+
 	//Calculates the Lower and Upper Triangles of Matrix A
 	public void LU() {
 		if(!LU) {
-		int numPivots = 0;
-		for(int col = 0; col < matrixCol; col++) {
-			if(!allZeroCol(U,matrixRow,col,numPivots)) {
-				int pivotRow = firstNonZeroValue(U, matrixRow, col,numPivots);
-				swap(U,matrixCol,pivotRow,numPivots);
-				pivotRow = numPivots;
-				for(int row = pivotRow + 1;row < matrixRow;row++) {
-					Fraction coeffiecent = (U[row][col].divide(U[pivotRow][col]));
-					L[row][col] = coeffiecent;
-					addRows(U, matrixCol, row, pivotRow, coeffiecent.multiply(NEGATIVEONE));
+			int numPivots = 0;
+			for(int col = 0; col < matrixCol; col++) {
+				if(!allZeroCol(U,matrixRow,col,numPivots)) {
+					int pivotRow = firstNonZeroValue(U, matrixRow, col,numPivots);
+					swap(U,matrixCol,pivotRow,numPivots);
+					pivotRow = numPivots;
+					for(int row = pivotRow + 1;row < matrixRow;row++) {
+						Fraction coeffiecent = (U[row][col].divide(U[pivotRow][col]));
+						L[row][col] = coeffiecent;
+						addRows(U, matrixCol, row, pivotRow, coeffiecent.multiply(NEGATIVEONE));
+					}
+					numPivots++;
 				}
-				numPivots++;
 			}
-		}
 		}
 		for(int row = 0; row < matrixRow; row++)
 			L[row][row] = Fraction.ONE;
@@ -483,72 +483,42 @@ public class Matrix {
 		if(mat.matrixRow == 2) {
 			return mat.matrix[0][0].multiply(mat.matrix[1][1]).subtract(mat.matrix[1][0].multiply(mat.matrix[0][1]));
 		}
-		
+
 		if(mat.matrixCol == 3) {
 			return determinant3X3(mat.matrix);
 		}
-		
-		Fraction[][] sign = new Fraction[mat.matrixRow][mat.matrixRow];
+
+		Fraction[] sign = new Fraction[mat.matrixRow];
 		Fraction val = Fraction.ONE;
 		for(int row = 0; row < mat.matrixRow; row++) {
-			for(int col = 0; col < mat.matrixRow; col++) {
-				sign[row][col] = val;
-				val = val.multiply(Matrix.NEGATIVEONE);
-			}
-			if(mat.matrixRow%2 == 0)val = val.multiply(Matrix.NEGATIVEONE);
+			sign[row] = val;
+			val = val.multiply(Matrix.NEGATIVEONE);
 		}
-		//Determine if a one exists
-		int oneX = -1;
-		int oneY = -1;
-		for(int row = 0;oneX == -1 && row < mat.matrixRow; row++) 
-			for(int col = 0;oneX == -1 && col < mat.matrixCol; col++) {
-				if(mat.matrix[row][col].equals(Fraction.ONE)) {
-					oneX = col;
-					oneY = row;
-				}
-			}
-		if(oneX != -1) {
-			for(int row = 0; row < mat.matrixRow; row++) {
-				if(row != oneY) {
-					mat.addRows(row, oneY, mat.matrix[row][oneX].multiply(NEGATIVEONE));
-				}
-			}
-			Matrix recurse = new Matrix(generateRecurseArray(mat,oneY, oneX),false);
-			return sign[oneY][oneX].multiply(determinant(recurse));
-		} else {
-			int rawPos = mat.mostZeroRowOrCol();
 
-			if(rawPos >= mat.matrixRow) {
-				int workingCol = rawPos - mat.matrixRow;
-				Fraction det = new Fraction("0");
-				for(int workingRow = 0; workingRow < mat.matrixRow; workingRow++) {
-					if(!mat.matrix[workingRow][workingCol].equals(Fraction.ZERO)) {
-					det = det.add(sign[workingRow][workingCol].multiply(determinant(new Matrix(generateRecurseArray(mat,workingRow, workingCol),false)).multiply(mat.matrix[workingRow][workingCol])));
-					}
+		if(!mat.allZeroCol(0, 0)) {
+			int pos = 0;
+			for(int row = 0; row < mat.matrixRow; row++) {
+				if(!mat.matrix[row][0].equals(Fraction.ZERO)) {
+					pos = row;
 				}
-				return det;
-			} else {
-				int workingRow = rawPos;
-				Fraction det = new Fraction("0");
-				for(int workingCol = 0; workingCol < mat.matrixCol; workingCol++) {
-					if(!mat.matrix[workingRow][workingCol].equals(Fraction.ZERO)) {
-					det = det.add(sign[workingRow][workingCol].multiply(determinant(new Matrix(generateRecurseArray(mat,workingRow, workingCol),false)).multiply(mat.matrix[workingRow][workingCol])));
-					}
-				}
-				return det;
 			}
-			
+			for(int row = pos +1; row < mat.matrixRow; row++) 
+				mat.addRows(row,pos,mat.matrix[row][0].multiply(NEGATIVEONE).divide(mat.matrix[pos][0]));
+			Matrix rec = new Matrix(Matrix.generateRecurseArray(mat, pos, 0),false);
+			return mat.matrix[pos][0].multiply(sign[pos]).multiply(Matrix.determinant(rec));
+		} else {
+			return Fraction.ZERO;
 		}
 	}
-	
-	
+
+
 	//Basket Weaving
 	private static Fraction determinant3X3(Fraction[][] a) {
 		Fraction det =  Fraction.ZERO;
 		det = det.add(a[0][0].multiply(a[1][1]).multiply(a[2][2]));
 		det = det.add(a[0][1].multiply(a[1][2]).multiply(a[2][0]));
 		det = det.add(a[0][2].multiply(a[1][0]).multiply(a[2][1]));
-		
+
 		det = det.subtract(a[2][0].multiply(a[1][1]).multiply(a[0][2]));
 		det = det.subtract(a[2][1].multiply(a[1][2]).multiply(a[0][0]));
 		det = det.subtract(a[2][2].multiply(a[1][0]).multiply(a[0][1]));
@@ -567,7 +537,7 @@ public class Matrix {
 			}
 			for(int row = 0; row < mat.matrixRow; row++)
 				for(int col = 0; col < mat.matrixCol; col++) {
-			
+
 					Fraction c = determinant(replaceColumn(mat,indentity[col],row));
 					m.matrix[row][col] = c.divide(det);
 				}
@@ -575,7 +545,7 @@ public class Matrix {
 		}
 		return null;
 	}
-	
+
 	public static Matrix replaceColumn(Matrix mat,Vector v, int replaceCol) {
 		Matrix ret = new Matrix(mat.matrixRow,mat.matrixCol,false);
 		for(int row = 0; row < mat.matrixRow; row++)
@@ -585,25 +555,25 @@ public class Matrix {
 				else
 					ret.matrix[row][col] = mat.matrix[row][col];
 			}
-		
+
 		return ret;
 	}
-	
+
 	public static Vector cramerRule(Matrix mat, Vector v) { 
 		if(!determinant(mat).equals(Fraction.ZERO)) {
-		Vector ret = new Vector(v.getNumRows());
-		for(int col = 0; col < mat.matrixCol; col++) {
-			Fraction x = determinant(replaceColumn(mat, v, col));
-			ret.vector[col] = x;
-		}
-		return ret;
+			Vector ret = new Vector(v.getNumRows());
+			for(int col = 0; col < mat.matrixCol; col++) {
+				Fraction x = determinant(replaceColumn(mat, v, col));
+				ret.vector[col] = x;
+			}
+			return ret;
 		}
 		return null;
 	}
-	
-	
-	
-	
+
+
+
+
 	private int mostZeroRowOrCol() {
 		int zeroCount = 0;
 		int pos = 0;
@@ -614,7 +584,7 @@ public class Matrix {
 				pos = row;
 			}
 		}
-		
+
 		for(int col = 0; col < matrixCol; col++) {
 			int zeroCountTest = zeroCountCol(col);
 			if(zeroCountTest > zeroCount) {
@@ -624,7 +594,7 @@ public class Matrix {
 		}
 		return pos;
 	}
-	
+
 	private int zeroCountRow(int row) {
 		int zeroCount = 0;
 		for(int col = 0; col < matrixCol; col++) {
@@ -633,7 +603,7 @@ public class Matrix {
 		}
 		return zeroCount;
 	}
-	
+
 	private int zeroCountCol(int col) {
 		int zeroCount = 0;
 		for(int row = 0; row < matrixCol; row++) {
@@ -642,7 +612,7 @@ public class Matrix {
 		}
 		return zeroCount;
 	}
-	
+
 	private static Fraction[][] generateRecurseArray(Matrix mat, int ignoreRow, int ignoreCol) {
 		Fraction[][] recurseArray = new Fraction[mat.matrixRow -1][mat.matrixCol-1];
 		int addRow = 0;
@@ -660,7 +630,7 @@ public class Matrix {
 			}
 		return recurseArray;
 	}
-	
+
 	public static Matrix inverse(Matrix mat) {
 		if(!determinant(mat).equals(Fraction.ZERO)) {
 			for(int row = 0; row < mat.matrixRow; row++) {
@@ -680,8 +650,42 @@ public class Matrix {
 		}
 		return null;
 	}
-	
-	
+
+	public Matrix multiply(Matrix rightHandSide) {
+		/*CS314 STUDENTS: ADD YOUR CODE HERE*/
+		if(rightHandSide.matrixRow == matrixCol) {
+			Matrix temp = new Matrix(matrix.length,rightHandSide.matrixCol,false);
+			for(int y = 0;y<matrix.length;y++) //the row of the first array
+				for(int z = 0;z<matrixCol;z++) //both the column of the first array and the rows of the second array 
+					for(int x = 0;x<rightHandSide.matrixCol;x++) //the columns of the second array.
+						temp.matrix[y][x].add(matrix[y][z].multiply(rightHandSide.matrix[z][x]));
+			return temp;
+		}
+		return null;
+	} 
+
+	public Vector multiply(Vector v) {
+		if(v.getNumRows() == matrixCol) {
+			Vector ret = new Vector(matrixRow);
+			for(int row = 0; row < matrixRow; row++)
+				for(int col = 0; col < matrixCol; col++)
+					ret.vector[row] = ret.vector[row].add(this.matrix[row][col].multiply(v.vector[col]));
+			return ret;
+		}
+		return null;
+	}
+
+	public Matrix add(Matrix m) {
+		if(matrixRow == m.matrixRow && matrixCol == m.matrixCol) {
+			Matrix ret = new Matrix(matrixRow,matrixCol,false);
+			for(int row = 0; row < matrixRow; row++)
+				for(int col = 0; col < matrixCol; col++)
+					ret.matrix[row][col] = this.matrix[row][col].add(m.matrix[row][col]);
+			return ret;
+		}
+		return null;
+	}
+
 }
-	
+
 

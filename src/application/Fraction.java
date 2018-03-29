@@ -7,6 +7,7 @@ public class Fraction implements Comparable<Fraction>{
 	public static boolean printModeFraction = true;
 	public static final Fraction ONE = new Fraction("1");
 	public static final Fraction ZERO = new Fraction("0");
+	public static final Fraction NEGATIVEONE = new Fraction("-1");
 	final long numerator;
 	final long denominator;
 	
