@@ -702,14 +702,14 @@ public class Matrix {
 			}
 		return colA;		
 	}
-	
+
 	public Vector getVector(int col) {
 		Vector v = new Vector(this.matrixRow);
 		for(int row = 0; row < matrixRow; row++)
 			v.vector[row] = this.matrix[row][col];
 		return v;
 	}
-	
+
 	public static Vector[] nulA(Matrix m) {
 		Matrix rref =  ((Matrix)m.clone());
 		int pivotCount = 0;

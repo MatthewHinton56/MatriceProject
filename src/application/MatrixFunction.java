@@ -9,7 +9,7 @@ public class MatrixFunction {
 	final boolean oneToOne;
 	final int domain;
 	final int codomain;
-	
+
 	public MatrixFunction(Matrix mat) {
 		matrix = (Matrix)mat.clone();
 		mat.rref();
@@ -26,7 +26,7 @@ public class MatrixFunction {
 		}
 		onto = ontoTemp;
 		boolean oneToOneTemp = true;
-		 index = 0;
+		index = 0;
 		while(oneToOneTemp && index < pivotCols.length) {
 			if(!pivotCols[index]) {
 				oneToOneTemp = false;
@@ -37,11 +37,11 @@ public class MatrixFunction {
 		domain = mat.matrixCol;
 		codomain = mat.matrixRow;
 	}
-	
+
 	public MatrixFunction(Fraction[][] mat) {
 		this(new Matrix(mat, false));
 	}
-	
+
 	//Takes in a vector and applies the transformation
 	public Vector evaluate(Vector v) {
 		Vector output = new Vector(codomain);
@@ -50,7 +50,7 @@ public class MatrixFunction {
 				output.vector[row] = output.vector[row].add(matrix.matrix[row][col].multiply(v.vector[col]));
 		return output;
 	}
-	
+
 	//determines if there exists an input for c such that Ax = c
 	public boolean isCinRange(Vector c) {
 		Matrix aug = Matrix.augment(matrix, c);
@@ -68,8 +68,8 @@ public class MatrixFunction {
 			}
 			return augCol;
 		}
-		
+
 		return aug.getAugColumn();
 	}
-	
+
 }

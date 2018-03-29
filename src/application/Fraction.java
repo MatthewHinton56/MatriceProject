@@ -10,7 +10,7 @@ public class Fraction implements Comparable<Fraction>{
 	public static final Fraction NEGATIVEONE = new Fraction("-1");
 	final long numerator;
 	final long denominator;
-	
+
 	public Fraction(String input) {
 		if(input.equals("0/0") || !isValid(input)) {
 			numerator = 1;
@@ -21,7 +21,7 @@ public class Fraction implements Comparable<Fraction>{
 		} else if(input.indexOf(".") > -1) {
 			String split[] = input.split("\\."); 
 			int b = split[1].length(); 
-			 long denominatorTemp = (long) Math.pow(10, b); 
+			long denominatorTemp = (long) Math.pow(10, b); 
 			long numeratorTemp = (long) (Double.parseDouble(input) * denominatorTemp); 											
 			long gcd = getGCD(denominatorTemp, numeratorTemp); 
 			if(numeratorTemp < 0 && denominatorTemp < 0) {
@@ -35,7 +35,7 @@ public class Fraction implements Comparable<Fraction>{
 			numerator = numeratorTemp/gcd;
 		} else {
 			String split[] = input.split("/"); 
-			 long denominatorTemp = Long.parseLong(split[1]);
+			long denominatorTemp = Long.parseLong(split[1]);
 			long numeratorTemp = Long.parseLong(split[0]);										
 			long gcd = getGCD(denominatorTemp, numeratorTemp); 
 			if(numeratorTemp < 0 && denominatorTemp < 0) {
@@ -47,11 +47,11 @@ public class Fraction implements Comparable<Fraction>{
 			}
 			denominator = denominatorTemp/gcd;
 			numerator = numeratorTemp/gcd;
-			
+
 		}
-		
+
 	}
-	
+
 	private static boolean isValid(String input) {
 		if(input.length() == 0)
 			return false;
@@ -77,11 +77,11 @@ public class Fraction implements Comparable<Fraction>{
 			return false;
 		return !((dotCount == 1) && (slashCount == 1));
 	}
-	
+
 	public static boolean isNumberNonZero(char c) {
 		return c >= 46 && c <= 57;
 	}
-	
+
 	public static boolean isNumberZero(char c) {
 		return c >= 45 && c <= 57;
 	}
@@ -89,8 +89,8 @@ public class Fraction implements Comparable<Fraction>{
 	private Fraction(long numerator, long denominator) {
 		this(numerator, denominator, true);
 	}
-	
-	
+
+
 	//reduce controlled
 	private Fraction(long numerator, long denominator, boolean b) {
 		if(b) {
@@ -105,8 +105,8 @@ public class Fraction implements Comparable<Fraction>{
 			numerator *= -1;
 			denominator *= -1;
 		}
-		
-		
+
+
 		this.numerator = numerator;
 		this.denominator = denominator;
 	}
@@ -125,7 +125,7 @@ public class Fraction implements Comparable<Fraction>{
 		n2 = Math.abs(n2);
 		return (n1 * n2)/getGCD(n1,n2);
 	}
-	
+
 
 	@Override
 	public int compareTo(Fraction o) {
@@ -136,7 +136,7 @@ public class Fraction implements Comparable<Fraction>{
 			return 1;
 		return 0;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		Fraction frac = fixSign((Fraction) obj);
@@ -148,7 +148,7 @@ public class Fraction implements Comparable<Fraction>{
 	public String toString() {
 		if(denominator == 1)
 			return numerator+"";
-		
+
 		if(printModeFraction) {
 			return numerator+ "/"+denominator;
 		}
@@ -182,7 +182,7 @@ public class Fraction implements Comparable<Fraction>{
 		long lcm = getLCM(this.denominator, leading.denominator);
 		Fraction frac1 = fixSign(this.scale(lcm/this.denominator));
 		Fraction frac2 = fixSign(leading.scale(lcm/leading.denominator));
-		
+
 		return frac1.numerator % frac2.numerator;
 	}
 
@@ -195,18 +195,18 @@ public class Fraction implements Comparable<Fraction>{
 	public Fraction abs() {
 		return fixSign(new Fraction(Math.abs(numerator), Math.abs(denominator)));
 	}
-	
+
 	public Fraction scale(long scale) {
 		return fixSign(new Fraction(this.numerator * scale, this.denominator * scale, false));
 	}
-	
+
 	public Fraction reciprocal() {
 		return fixSign(new Fraction(this.denominator, this.numerator));
 	}
-	
+
 	public static void main(String[] args) {
 	}
-	
+
 	private static Fraction fixSign(Fraction frac) {
 		if(frac.numerator < 0 && frac.denominator < 0) {
 			return new Fraction(Math.abs(frac.numerator), Math.abs(frac.denominator),false);
@@ -218,9 +218,9 @@ public class Fraction implements Comparable<Fraction>{
 			return new Fraction(frac.numerator , frac.denominator ,false);
 		}
 	}
-	
+
 	public double getDecimal() {
 		return ((double)numerator)/denominator;
 	}
-	
+
 }

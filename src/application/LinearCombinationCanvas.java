@@ -13,7 +13,7 @@ public class LinearCombinationCanvas extends Canvas{
 	GraphicsContext gc;
 	LinearCombination comb;
 	int width, height;
-	
+
 	private  void generate2DAxis() {
 		gc.setGlobalAlpha(1);
 		gc.setStroke(Color.BLACK);
@@ -23,7 +23,7 @@ public class LinearCombinationCanvas extends Canvas{
 			int y = ((height-10)/20)*(10-i)+20;
 			gc.fillText(i+"", x, height/2);
 			gc.fillText(i+"", width/2, y);
-	
+
 		}
 		gc.strokeLine(0, height/2, width-1, height/2);
 		gc.strokeLine(width/2, 0, width/2, height-1);
@@ -47,25 +47,25 @@ public class LinearCombinationCanvas extends Canvas{
 
 
 	private void generate2Dpoints() {
-		
+
 		for(Vector v: comb.getOutputs()) {
 			double x = v.vector[0].getDecimal();
 			double y = v.vector[1].getDecimal();
-			 x = ((width-10)/20)*(x +10);
-			 y = ((height-10)/20)*(10 - y)+20;
-			 if(x >= width)
-				 x = width-1;
-			 if(x < 0)
-				 x = 0;
-			 if(y >= height)
-				 y = height-1;
-			 if(y < 0)
-				 y = 0;
+			x = ((width-10)/20)*(x +10);
+			y = ((height-10)/20)*(10 - y)+20;
+			if(x >= width)
+				x = width-1;
+			if(x < 0)
+				x = 0;
+			if(y >= height)
+				y = height-1;
+			if(y < 0)
+				y = 0;
 			gc.strokeLine(width/2, height/2, x, y);
 		}
-		
+
 	}
-	
+
 	private void generate2DPlane() {
 		gc.setFill(Color.RED);
 		gc.setGlobalAlpha(.5);
@@ -76,16 +76,16 @@ public class LinearCombinationCanvas extends Canvas{
 		for(Vector v: comb.getVectorEdges2D()) {
 			double x = v.vector[0].getDecimal();
 			double y = v.vector[1].getDecimal();
-			 x = ((width-10)/20)*(x +10) +10;
-			 y = ((height-10)/20)*(10 - y)+20;
-			 pointsX[pos] = x;
-			 pointsY[pos] = y;
-			 pos++;
+			x = ((width-10)/20)*(x +10) +10;
+			y = ((height-10)/20)*(10 - y)+20;
+			pointsX[pos] = x;
+			pointsY[pos] = y;
+			pos++;
 		}
 		gc.fillPolygon(pointsX, pointsY, 4);
 		gc.setStroke(Color.RED);
 		gc.setGlobalAlpha(1);
 		gc.strokePolygon(pointsX, pointsY, 4);
 	}
-	
+
 }

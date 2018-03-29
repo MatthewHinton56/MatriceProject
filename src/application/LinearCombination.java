@@ -9,8 +9,8 @@ public class LinearCombination {
 	private ArrayList<Vector> outputs;
 	private int dimension;
 	private int lowerBound, upperBound;
-	
-	
+
+
 	public LinearCombination(Vector[] vectors) {
 		this.vectors = vectors;
 		dimension = vectors[0].getNumRows();
@@ -19,7 +19,7 @@ public class LinearCombination {
 		upperBound = 5;
 		basis = colA(vectors);
 		if(dimension <= 3)
-		generateOutputs();
+			generateOutputs();
 	}
 
 	public LinearCombination(Vector[] vectors, int lowerBound, int upperBound) {
@@ -29,7 +29,7 @@ public class LinearCombination {
 		this.lowerBound = lowerBound;
 		this.upperBound = upperBound;
 		if(dimension <= 3)
-		generateOutputs();
+			generateOutputs();
 	}
 
 	private void generateOutputs() {
@@ -53,7 +53,7 @@ public class LinearCombination {
 			}
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		String s = "";
@@ -63,7 +63,7 @@ public class LinearCombination {
 		s += outputs.toString();
 		return s;
 	}
-	
+
 	public Vector[] getVectors() {
 		return vectors;
 	}
@@ -99,9 +99,9 @@ public class LinearCombination {
 		LinearCombination comb = new LinearCombination(vectors);
 		System.out.println(comb);
 	}
-	
+
 	//2D bounds methods, allows for the creation of the 2D plane
-	
+
 	public Vector getMaxXY() {
 		Vector max = outputs.get(0);
 		for(Vector v: outputs) {
@@ -110,7 +110,7 @@ public class LinearCombination {
 		}
 		return max;
 	}
-	
+
 	public Vector getMaxXMinY() {
 		Vector max = outputs.get(0);
 		for(Vector v: outputs) {
@@ -119,7 +119,7 @@ public class LinearCombination {
 		}
 		return max;
 	}
-	
+
 	public Vector getMinXMaxY() {
 		Vector max = outputs.get(0);
 		for(Vector v: outputs) {
@@ -128,7 +128,7 @@ public class LinearCombination {
 		}
 		return max;
 	}
-	
+
 	public Vector getMinXY() {
 		Vector max = outputs.get(0);
 		for(Vector v: outputs) {
@@ -137,7 +137,7 @@ public class LinearCombination {
 		}
 		return max;
 	}
-	
+
 	public Vector[] getVectorEdges2D() {
 		Vector v1 = getMaxXMinY();
 		Vector v2 = getMaxXY();
@@ -146,7 +146,7 @@ public class LinearCombination {
 		Vector[] vec = {v1,v2,v3,v4};
 		return vec;
 	}
-	
+
 	public boolean linearIndepenent() {
 		Matrix m = new Matrix(this.vectors, false);
 		m.ref();
@@ -159,7 +159,7 @@ public class LinearCombination {
 			index++;
 		}
 		return independent;
-		}
+	}
 
 	public Vector evaluate(Vector v) {
 		Vector ret = new Vector(v.getNumRows());
@@ -180,7 +180,7 @@ public class LinearCombination {
 			}
 			return augCol;
 		}
-		
+
 		return aug.getAugColumn();
 	}
 
@@ -208,7 +208,7 @@ public class LinearCombination {
 		}
 		return col;
 	}
- 	
-	
-	
+
+
+
 }
