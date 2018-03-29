@@ -205,19 +205,26 @@ public class EigenMatrix extends Matrix {
 		return recurseArray;
 	}
 	
-	public boolean isValidEVal(Fraction eval) {
+	public boolean isValidEVal(Fraction eVal) {
 		Matrix indentity = new Matrix(this.matrixRow,this.matrixCol,false);
 		for(int i = 0; i < this.matrixRow; i++)
-			indentity.matrix[i][i] = eval.multiply(Fraction.NEGATIVEONE);
+			indentity.matrix[i][i] = eVal.multiply(Fraction.NEGATIVEONE);
 		Matrix t = this.add(indentity);
 		return (Matrix.determinant(t).equals(Fraction.ZERO));
 		
 	}
 	
-	
-	
-	
-	
+	public Vector[] generateEigenSpace(Fraction eVal) {
+		if(isValidEVal(eVal)) {
+			Matrix indentity = new Matrix(this.matrixRow,this.matrixCol,false);
+			for(int i = 0; i < this.matrixRow; i++)
+				indentity.matrix[i][i] = eVal.multiply(Fraction.NEGATIVEONE);
+			Matrix t = this.add(indentity);
+			Vector[] nulA = nulA(t);
+			return nulA;
+		}
+		return null;
+	}
 	
 	
 }

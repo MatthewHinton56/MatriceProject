@@ -686,6 +686,45 @@ public class Matrix {
 		return null;
 	}
 
+	public static Vector[] colA(Matrix m) {
+		Matrix rref = ((Matrix)m.clone());
+		rref.rref();
+		int pivotCount = 0;
+		for(int col = 0; col < m.matrixCol; col++)
+			if(rref.pivotCols[col])
+				pivotCount++;
+		Vector[] colA = new Vector[pivotCount];
+		int pos = 0;
+		for(int col = 0; col < m.matrixCol; col++)
+			if(rref.pivotCols[col]) {
+				colA[pos] = m.getVector(col);
+				pos++;
+			}
+		return colA;		
+	}
+	
+	public Vector getVector(int col) {
+		Vector v = new Vector(this.matrixRow);
+		for(int row = 0; row < matrixRow; row++)
+			v.vector[row] = this.matrix[row][col];
+		return v;
+	}
+	
+	public static Vector[] nulA(Matrix m) {
+		Matrix rref =  ((Matrix)m.clone());
+		int pivotCount = 0;
+		for(int col = 0; col < m.matrixCol; col++)
+			if(!rref.pivotCols[col])
+				pivotCount++;
+		Vector[] nulA = new Vector[pivotCount];
+		int pos = 0;
+		for(int col = 0; col < m.matrixCol; col++)
+			if(!rref.pivotCols[col]) {
+				nulA[pos] = m.getVector(col);
+				pos++;
+			}
+		return nulA;
+	}
 }
 
 
